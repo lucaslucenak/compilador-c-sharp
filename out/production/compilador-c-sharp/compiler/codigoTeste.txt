@@ -4,71 +4,48 @@ namespace ExemploTeste {
     public class ProgramaTeste {
 
         public static void Main(string[] args) {
-            // Testando tipos básicos e atribuições
+            // Tipos básicos e atribuições
             string mensagem = "Olá, mundo!";
             int numeroInteiro = 10;
             float numeroReal = 5.5f;
 
-            // Saída
+            // Saída usando Console.WriteLine
             Console.WriteLine(mensagem);
-            Console.WriteLine("Número inteiro: " + numeroInteiro);
-            Console.WriteLine("Número real: " + numeroReal);
+            Console.WriteLine("Inteiro: " + numeroInteiro);
+            Console.WriteLine("Real: " + numeroReal);
 
             // Chamada de função
-            int dobro = DobrarNumero(numeroInteiro);
-            Console.WriteLine("O dobro de " + numeroInteiro + " é: " + dobro);
+            int dobro = Dobrar(numeroInteiro);
+            Console.WriteLine("Dobro de " + numeroInteiro + ": " + dobro);
 
-            // Laço - While com expressão
-            int contador = 5;
+            // Laço while
+            int contador = 3;
             while (contador > 0) {
-                Console.WriteLine("Contador: " + contador);
+                Console.WriteLine("Contagem regressiva: " + contador);
                 contador--;
             }
 
-            // Estrutura condicional com expressões
+            // Estrutura condicional if-else
             if (numeroInteiro > 5 && numeroReal < 10.0f) {
-                Console.WriteLine("Número inteiro maior que 5 E número real menor que 10");
+                Console.WriteLine("Inteiro maior que 5 e Real menor que 10.0");
             } else {
                 Console.WriteLine("Outra condição");
             }
 
             // Comando de entrada
-            Console.WriteLine("Digite um número:");
-            string entradaStr = Console.ReadLine();
-            int entrada = ConverterStringParaInt(entradaStr);
+            Console.WriteLine("Digite algo:");
+            string entrada = Console.ReadLine();
             Console.WriteLine("Você digitou: " + entrada);
 
-            // Expressões complexas com operadores
-            bool expressaoBooleana = (numeroInteiro + entrada) < 20 && (numeroReal - 2.5f) > 2.0f;
-            Console.WriteLine("Resultado da expressão booleana: " + expressaoBooleana);
-
-            // Operações aritméticas em uma expressão
-            int soma = numeroInteiro + entrada;
-            float divisao = numeroReal / 2;
-            bool comparacao = soma > divisao;
-            Console.WriteLine("Soma: " + soma + ", Divisão: " + divisao + ", Comparação (soma > divisão): " + comparacao);
+            // Expressões com operadores
+            int soma = numeroInteiro + 5;
+            bool maiorQueDez = soma > 10;
+            Console.WriteLine("Soma maior que dez? " + maiorQueDez);
         }
 
         // Declaração de função
-        public static int DobrarNumero(int num) {
+        public static int Dobrar(int num) {
             return num * 2;
-        }
-
-        // Função auxiliar para converter string para int
-        public static int ConverterStringParaInt(string str) {
-            int resultado = 0;
-            int i = 0;
-            while (i < str.Length) {
-                char c = str[i];
-                if (c >= '0' && c <= '9') {
-                    resultado = resultado * 10 + (c - '0');
-                } else {
-                    // Não é um número válido, retorna 0 ou lança uma exceção
-                    return 0;
-                }
-                i++;
-            }
-            return resultado;
         }
     }
 }
