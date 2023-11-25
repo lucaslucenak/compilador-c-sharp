@@ -332,8 +332,7 @@ void ListaDeArgumentos():{}{ Expressao() (<VIRGULA> Expressao())* }
 void BlocoDeDeclaracoesWhile():{}{ <ABRE_CHAVE> (CorpoDaDeclaracaoWhile() )* <FECHA_CHAVE> }
 
 void CorpoDaDeclaracaoWhile():{}{
-    ChamarFuncao()
-  | AtribuirVariavel()
+  AtribuirVariavel()
   | RetornoDaFuncao()
   | DeclararVariavel()
   | If_Else()
