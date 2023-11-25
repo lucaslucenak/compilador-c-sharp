@@ -2,17 +2,40 @@ PARSER_BEGIN(CompiladorCSharp)
 
 package compiler;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class CompiladorCSharp {
 
-	public static void main(String[] args) {
-		try {
-			String programa = Arquivo.Read("codigoTeste.txt");
-			new CompiladorCSharp(new java.io.StringReader(programa)).RUN();
-			System.out.println("\n\nA Sintaxe Correta. Compilado com Sucesso!.");
-		}catch(Throwable e) {
-			System.out.println("\n\nErro na sintaxe: "+e.getMessage());
-		}
-	}
+    public static void main(String[] args) {
+        try {
+            String programa = Read("codigoTeste.txt");
+            new CompiladorCSharp(new java.io.StringReader(programa)).RUN();
+            System.out.println("\n\nA Sintaxe Correta. Compilado com Sucesso!.");
+        } catch(Throwable e) {
+            System.out.println("\n\nErro na sintaxe: " + e.getMessage());
+        }
+    }
+
+    public static String Read(String caminho) throws Exception {
+        StringBuilder conteudo = new StringBuilder();
+        try {
+            FileReader arq = new FileReader(caminho);
+            BufferedReader lerArq = new BufferedReader(arq);
+            String linha;
+            while ((linha = lerArq.readLine()) != null) {
+                conteudo.append(linha).append("\n");
+            }
+            arq.close();
+        } catch (FileNotFoundException ex) {
+            throw new Exception("Arquivo nao encontrado: " + ex.getMessage());
+        } catch (IOException ex) {
+            throw new Exception("Erro na leitura do arquivo: " + ex.getMessage());
+        }
+        return conteudo.toString();
+    }
 }
 
 PARSER_END(CompiladorCSharp)
@@ -282,9 +305,11 @@ void item():{} {
 void termo():{} {
     itemUnico() (("*"|"/"|"%") itemUnico() )*
 }
+
 void itemUnico():{} {
     [("+"|"-")] Item()
 }
+
 void Item():{} {
      <INTEGER_LITERAL> | <STRING_LITERAL> | <FLOATING_LITERAL> | <NULL> |(<NEGACAO> )?( VariavelExpressao() |<ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> | <TRUE> | <FALSE>)
 }/* UM ITEM PODE SER QUALQUER VALOR:
