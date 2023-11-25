@@ -1,0 +1,345 @@
+PARSER_BEGIN(CompiladorCSharp)
+
+package compiler;
+
+public class CompiladorCSharp {
+
+	public static void main(String[] args) {
+		try {
+			String programa = Arquivo.Read("codigoTeste.txt");
+			new CompiladorCSharp(new java.io.StringReader(programa)).RUN();
+			System.out.println("\n\nA Sintaxe Correta. Compilado com Sucesso!.");
+		}catch(Throwable e) {
+			System.out.println("\n\nErro na sintaxe: "+e.getMessage());
+		}
+	}
+}
+
+PARSER_END(CompiladorCSharp)
+
+//IGNORAR
+SKIP:
+{	" " | "\r" | "\t" | "\n"
+ | <COMENTARIO_SIMPLES: "//" (<OBS>)*>
+ | <COMENTARIOS_LONGO: "/*" ("\n" | "\r" | <OBS>)* "*/" >
+ | <#OBS: ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ( ["\n","\r"] | "\r\n")))*>
+}
+
+//PALAVRAS RESERVADAS
+TOKEN :
+{
+      <INT: "int"> { System.out.println("Tipo int: " + image); }
+    | <VAR: "var" > { System.out.println("Tipo Var: " + image); }
+    | <FLOAT: "float" > { System.out.println("Tipo Float: " + image); }
+    | <BOOL: "bool"> { System.out.println("Tipo Bool: " + image); }
+    | <CHAR: "char" > { System.out.println("Tipo Char: " + image); }
+    | <STRING: "string" > { System.out.println("Tipo String: " + image); }
+    | <NULL: "null" >  { System.out.println("Palavra Reservada: " + image); }
+    | <USING: "using" > { System.out.println("Palavra Reservada: " + image); }
+    | <NAMESPACE: "namespace"> { System.out.println("Palavra Reservada: " + image); }
+    | <CLASS: "class" >  { System.out.println("Palavra Reservada: " + image); }
+    | <MAIN: "Main" >  { System.out.println("Palavra Reservada: " + image); }
+    | <VOID: "void" >  { System.out.println("Tipo Void: " + image); }
+    | <RETURN: "return" >  { System.out.println("Palavra Reservada: " + image); }
+    | <STATIC: "static" >  { System.out.println("Palavra Reservada: " + image); }
+    | <PRIVATE: "private" >  { System.out.println("Palavra Reservada: " + image); }
+    | <PROTECTED: "protected" >  { System.out.println("Palavra Reservada: " + image); }
+    | <PUBLIC: "public" >  { System.out.println("Palavra Reservada: " + image); }
+    | <INTERNAl: "internal" >  { System.out.println("Palavra Reservada: " + image); }
+    | <IF: "if" >  { System.out.println("Palavra Reservada: " + image); }
+    | <ELSE: "else" >  { System.out.println("Palavra Reservada: " + image); }
+    | <TRUE: "true" >  { System.out.println("Palavra Reservada: " + image); }
+    | <FALSE: "false" >  { System.out.println("Palavra Reservada: " + image); }
+    | <PRINT: "Console.WriteLine" >  { System.out.println("Palavra Reservada: " + image); }
+    | <INPUT: "Console.ReadLine" >  { System.out.println("Palavra Reservada: " + image); }
+    | <WHILE: "while" >  { System.out.println("Palavra Reservada: " + image); }
+    | <BREAK: "break" >  { System.out.println("Palavra Reservada: " + image); }
+    | <CONTINUE: "continue" >  { System.out.println("Palavra Reservada: " + image); }
+}
+
+// DELIMITADORES
+TOKEN:
+{
+      <ABRE_PARENTESES: "("> { System.out.println("Abre Parentese: " + image); }
+    | <FECHA_PARENTESES: ")"> { System.out.println("Fecha Parentese: " + image); }
+    | <ABRE_CHAVE: "{"> { System.out.println("Abre Chaves: " + image); }
+    | <FECHA_CHAVE: "}"> { System.out.println("Fecha Chaves: " + image); }
+    | <ABRE_COLCHETE: "["> { System.out.println("Abre Cochetes: " + image); }
+    | <FECHA_COLCHETE: "]"> { System.out.println("Fecha Cochetes: " + image); }
+    | <PONTO_VIRGULA: ";"> { System.out.println("Ponto e Virgula: " + image); }
+    | <VIRGULA: ","> { System.out.println("Virgula: " + image); }
+    | <PONTO: "."> { System.out.println("Ponto: " + image); }
+}
+
+//OPERADORES
+TOKEN :
+{
+    < RECEBE: "=" > { System.out.println("Operador de Atribuicao: " + image); }
+  | < MAIOR: ">" > { System.out.println("Operador de Maior: " + image); }
+  | < MENOR: "<" > { System.out.println("Operador de Menor: " + image); }
+  | < NEGACAO: "!" > { System.out.println("Operador de Negação: " + image); }
+  | < DOIS_PONTOS: ":" > { System.out.println("Operador de Dois Pontos: " + image); }
+  | < IGUAL: "==" > { System.out.println("Operador de Igualdade: " + image); }
+  | < MAIOR_IGUAL: "<=" > { System.out.println("Operador de Menor Igual: " + image); }
+  | < MENOR_IGUAL: ">=" > { System.out.println("Operador de Maior Igual: " + image); }
+  | < DIFERENTE: "!=" > { System.out.println("Operador de Diferente: " + image); }
+  | < OR: "||" > { System.out.println("Operador Ou: " + image); }
+  | < AND: "&&" > { System.out.println("Operador E: " + image); }
+  | < INCREMENTO: "++" > { System.out.println("Operador de Incremento: " + image); }
+  | < DECREMENTO: "--" > { System.out.println("Operador de Decremento: " + image); }
+  | < MAIS: "+" > { System.out.println("Operador de Soma: " + image); }
+  | < MENOS: "-" > { System.out.println("Operador de Subtracao: " + image); }
+  | < ASTERISCO: "*" > { System.out.println("Operador de Multiplicacao: " + image); }
+  | < BARRA: "/" > { System.out.println("Operador de Divisao: " + image); }
+  | < PORCENTO: "%" > { System.out.println("Operador de Modulo: " + image); }
+  | < MAIS_IGUAL: "+=" > { System.out.println("Operador de Mais Igual: " + image); }
+  | < MENOS_IGUAL: "-=" > { System.out.println("Operador de Menos Igual: " + image); }
+  | < ASTERISCO_IGUAL: "*=" > { System.out.println("Operador de Vezes Igual: " + image); }
+  | < BARRA_IGUAL: "/=" > { System.out.println("Operador de Divisao Igual: " + image); }
+  | < PORCENTO_IGUAL: "%=" > { System.out.println("Operador de Modulo Igual: " + image); }
+}
+
+// IDENTIFICADOR
+TOKEN:
+{
+		<IDENTIFICADOR:
+		<LETRA> (<LETRA> | <DIGITO> | "_" )* >
+		{
+		  System.out.println("Identificador: " +image);
+		}
+
+	|	<#LETRA: (["a"-"z", "A"-"Z"])>
+	| 	<#DIGITO: ["0"-"9"]>
+}
+
+TOKEN :
+{
+      < INTEGER_LITERAL: <DECIMAL> >
+      {
+        System.out.println("Literal Int: " + image);
+      }
+    | < #DECIMAL: (["+", "-"])? (["0"-"9"])+ >
+
+    |< FLOATING_LITERAL: (["+", "-"])? ( (["0"-"9"])+ (["f","F"])?
+         |(["0"-"9"])* "." (["0"-"9"])+ (<EXPONENT>)? (["f","F"])
+         |(["0"-"9"])+ (<EXPONENT> ["f","F"])? ) >
+         {
+         System.out.println("Literal Ponto Flutuante: " + image);
+         }
+
+     | < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+
+    | < CHARACTER_LITERAL: "'"(   (~["'","\\","\n","\r"])
+        | ("\\" ( ["n","t","b","r","f","\\","'","\""]
+        | ["0"-"7"] ( ["0"-"7"] )?
+        | ["0"-"3"] ["0"-"7"] ["0"-"7"] ))) "'" >
+        {
+          System.out.println("Literal Char: " + image);
+        }
+
+    | < STRING_LITERAL:
+      "\""(   (~["\"","\\","\n","\r"])
+    	| ("\\"( ["n","t","b","r","f","\\","'","\""]
+       	| ["0"-"7"] ( ["0"-"7"] )?
+    	| ["0"-"3"] ["0"-"7"] ["0"-"7"] )))*"\"">
+    	{
+    	  System.out.println("Literal String: " + image);
+    	}
+    | < BOOL_LITERAL: ("!")? (<TRUE> | <FALSE>) >
+         {
+             System.out.println("Literal Bool: " + image);
+         }
+
+}
+
+/****************************************
+* ******** GRAMATICA LINGUAGEM C# *******
+*****************************************/
+
+void RUN():{}{ Programa() }
+
+void Programa():{}{ (DeclararUsing())* (DeclararNamespace() | DeclararClassePrincipal()) }
+/*  ESTRUTURA GERAL DE UM PROJETO EM C#
+                IMPORTACOES : using System
+                NAMESPACE  :   namespace {   [public class Atividade1 {  }]    }(PODE EXISTIR OU NAO)
+                PRINCIPAL DA CLASE: public class Atividade1 {  }
+* */
+
+void DeclararUsing():{}{ <USING><IDENTIFICADOR> (<PONTO> <IDENTIFICADOR>)* <PONTO_VIRGULA> }
+/*DECLARANDO AS IMPORTACOES DAS BIBLIOTECAS EM C#: using System;
+                                                   using System.Mathematics.pow; (extendida)
+* */
+
+void DeclararNamespace():{}{  <NAMESPACE><IDENTIFICADOR> <ABRE_CHAVE> DeclararClassePrincipal() <FECHA_CHAVE> }
+/*DECLARACAO DO NAMESPACE DO PACOTE? namespace Atividade1 {   [aqui fica public class]    }
+* */
+
+void DeclararClassePrincipal():{} { Modificador() <CLASS> <IDENTIFICADOR> <ABRE_CHAVE> CorpoClasse() <FECHA_CHAVE> }
+/*DECLARA A CLASSE PRINCIPAL :  public class Atividade1 {    [Main fica aqui] }
+* */
+
+void CorpoClasse():{} {(    (Modificador())? (<STATIC>)? TipoDeDados() (   <IDENTIFICADOR> (Instanciarvariavel() | InstanciaFuncao()) | Main()   )     )*}
+/*PODE SER DECLARACAO public static string nome = "oe"
+           FUNCAO      public static void print(){ }
+           MAIN        public static void Main(String[] args){ }
+           CONSTRUTOR
+* */
+
+void Instanciarvariavel():{} { (<RECEBE> (Expressao()| Input()) )? (<VIRGULA><IDENTIFICADOR> (<RECEBE> Expressao())? )* <PONTO_VIRGULA> }
+/* INSTANCIA A VARIAVEL :  = (expressao |null | true | false )/
+   OU VARIAS SEGUIDAS   = "rom" , sobrenome = "ferr", nomeCompleto = "rom ferr"/
+                         , nome2, nome3,
+       INPUT            = Console.ReadLine()
+* */
+
+
+void InstanciaFuncao():{} { <ABRE_PARENTESES> (ListaDeParametros())? <FECHA_PARENTESES> BlocoDeDeclaracoes() }
+/*  INSTANCIA A VARIAVEL COMO UMA FUNCAO :  ( string nome, int numero ) { }
+                                            () { }
+
+* */
+
+void ListaDeParametros():{}{ TipoDeDados() <IDENTIFICADOR> (<VIRGULA> TipoDeDados() <IDENTIFICADOR>)* }
+/* LISTA DE PARAMETROS DE UMA FUNCAO : string nome
+                                     : string nome, string sobrenome, int idade
+* */
+
+void Main():{} {  <MAIN> <ABRE_PARENTESES> <STRING> <ABRE_COLCHETE> <FECHA_COLCHETE> <IDENTIFICADOR> <FECHA_PARENTESES> BlocoDeDeclaracoes() }
+/* INSTANCIA O CORPO DA CLASSE COMO UM MAIN:  public static void Main(string[] args) { }
+* */
+
+void BlocoDeDeclaracoes():{} { <ABRE_CHAVE> (CorpoDaDeclaracao())* <FECHA_CHAVE> }
+/*  BLOCO DE CODIGO DA DECLARACAO DE TODAS AS DECLARAÇÕES:  {  [ if| print| while| expressao | return | declarar variavel] }
+* */
+
+void ChamarFuncao() : {} {
+    <IDENTIFICADOR> "(" (ListaDeArgumentos())? ")" <PONTO_VIRGULA>
+}
+
+void CorpoDaDeclaracao():{}{
+    ChamarFuncao()
+  | DeclararVariavel()
+  | AtribuirVariavel()
+  | RetornoDaFuncao()
+  | If_Else()
+  | Print()
+  | Input() <PONTO_VIRGULA>
+  | While()
+}
+/* CORPO PRINCIPAL DA APLICAÃO COM AS PRINCIPAIS CARACTERISTICAS DA LINGUAGEM COMO:
+           DECLARAR UMA VARIAVEL :  string nome [ = expressao | true | false| null]
+           RETORNO DA FUNCAO: return [ = expressao | true | false| null];
+           IF e ELSE : if(){}    if(){} else{}
+           PRINT : Console.WriteLine("teste");
+           INPUT : Console.ReadLine();
+           WHILE   : while(expressao| true | false) {}
+           EXPRESSAO : ...
+* */
+
+void DeclararVariavel(): {}{ TipoDeDados() <IDENTIFICADOR>  (Instanciarvariavel()| InstanciaFuncao() )}
+/* DECLARA UMA VARIAVEL:   string nome [ = expressao | true | false| null]
+                FUNCAO :  string getnome(lista, lista)
+* */
+
+void AtribuirVariavel(): {}{
+    <IDENTIFICADOR> (Instanciarvariavel() | (<INCREMENTO> | <DECREMENTO> | ExpressaoNumericaComAtribuicao() Expressao()) <PONTO_VIRGULA> )
+   |(<INCREMENTO> | <DECREMENTO> )<IDENTIFICADOR> <PONTO_VIRGULA>
+}
+/* ATRIBUI UM VALOR A VARIAVEL:   nome [ = expressao | true | false| null]
+                                   nome++;
+                                   ++nome;
+                                   nome += expressao ;
+* */
+
+
+void ExpressaoNumericaComAtribuicao(): {}{ <MAIS_IGUAL>  | <MENOS_IGUAL>  | <ASTERISCO_IGUAL>  | <BARRA_IGUAL> |  <PORCENTO_IGUAL>  }
+/* FAZ O FINAL DE UMA OPERACAO ARITMETRICA COMM ATRIBUICAO [valor ] +=  10
+* */
+
+void RetornoDaFuncao(): {}{ <RETURN> Expressao() <PONTO_VIRGULA> }
+/* RETORNO DE UMA FUNCAO:   return [ = expressao | true | false| null];
+* */
+
+void If_Else(): {}{ <IF> <ABRE_PARENTESES>  Expressao() <FECHA_PARENTESES> BlocoDeDeclaracoesWhile() ( <ELSE> BlocoDeDeclaracoesWhile() )? }
+/*  IF e ELSE : if(){}    if(){} else{}'
+* */
+
+void Expressao():{} {
+    item() [(<MENOR>| <MAIOR> |<MENOR_IGUAL> |<MAIOR_IGUAL> |<IGUAL>|<DIFERENTE> |<AND>|<OR>) item()] [((<AND>|<OR>) Expressao())]
+}
+/* EXPRESSOES DA GRAMATICA
+            TRUE | FALSE | !TRUE | ! FALSE| NULL
+            COMPARACOES : 9> 2
+            OPERACOES: 2+2   | 3/8 | 3%1 ...
+            E LOGICAS COMPLEXAS COM PARENTESES
+
+* */
+
+void item():{} {
+    termo() ( ("+" | "-") termo() )*
+}
+
+void termo():{} {
+    itemUnico() (("*"|"/"|"%") itemUnico() )*
+}
+void itemUnico():{} {
+    [("+"|"-")] Item()
+}
+void Item():{} {
+     <INTEGER_LITERAL> | <STRING_LITERAL> | <FLOATING_LITERAL> | <NULL> |(<NEGACAO> )?( VariavelExpressao() |<ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> | <TRUE> | <FALSE>)
+}/* UM ITEM PODE SER QUALQUER VALOR:
+                        INTEIRO: 3
+                        STRING: "rom"
+                        FLOATING: 5.9f
+                        NULL: null
+               VALORES COM NEGACAO:  ! [ variavel(tipo bool | funcao tipo bool)  | expressao (5>7) | true | false]
+*/
+
+void VariavelExpressao():{} {
+    <IDENTIFICADOR> (<ABRE_PARENTESES> ListaDeArgumentos() <FECHA_PARENTESES> | <INCREMENTO> | <DECREMENTO> )?
+}
+/*  CASO HAJA UMA VARIAVEL NA EXPRESSAO ELA TEM OS CAMINHOS:
+                                         FUNCAO: soma(2,3)
+                                         INCREMENTO: soma++
+                                         DECREMENTO: soma--
+                                         SO O VALOR DA VARIAVEL: soma
+* */
+
+void Print():{}{ <PRINT> <ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> <PONTO_VIRGULA>  }
+/*PRINT : Console.WriteLine("teste");
+* */
+
+void Input():{}{ <INPUT> <ABRE_PARENTESES> <FECHA_PARENTESES> }
+/*PRINT : INPUT : Console.ReadLine()
+* */
+
+void While():{}{ <WHILE> <ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> BlocoDeDeclaracoesWhile() }
+/*WHILE   : while(expressao| true | false) {}
+* */
+
+void Modificador():{}{ <PRIVATE> | <PROTECTED> | <PUBLIC> | <INTERNAl> }
+/* MODIFICADORES DE ACESSO DA CLASSE, FUNCAO OU VARIAVEL
+           public int = 1 | protected nome = "rom"| private senha = "88" | internal some()
+* */
+void TipoDeDados():{}{<INT> | <FLOAT> | <STRING> | <CHAR> | <BOOL> | <VOID> | <VAR> }
+/* TIPO DE DADO DA VARIAVEL | FUNCAO E CLASSE;
+* */
+
+void ListaDeArgumentos():{}{ Expressao() (<VIRGULA> Expressao())* }
+/* LISTA DE ARGUMENTOS DE UMA FUNCAO: soma(2, 2)
+* */
+
+void BlocoDeDeclaracoesWhile():{}{ <ABRE_CHAVE> (CorpoDaDeclaracaoWhile() )* <FECHA_CHAVE> }
+
+void CorpoDaDeclaracaoWhile():{}{
+    ChamarFuncao()
+  | AtribuirVariavel()
+  | RetornoDaFuncao()
+  | DeclararVariavel()
+  | If_Else()
+  | Print()
+  | Input() <PONTO_VIRGULA>
+  | While()
+  | <BREAK> <PONTO_VIRGULA>
+  | <CONTINUE> <PONTO_VIRGULA>
+  }

@@ -1,0 +1,43 @@
+using System;
+
+namespace ExemploAplicacao
+{
+    public class Programa
+    {
+        static void Main(string[] args)
+        {
+            // Chamando uma função sem parâmetros
+            string nome = ExibirMensagem("lucas");
+
+            // Chamando uma função com um parâmetro
+            ExibirNome("Daniel");
+
+            // Chamando uma função que retorna um valor
+            int soma = SomarDoisNumeros(5, 7);
+            Console.WriteLine("Soma: " + soma);
+
+            // Chamando uma função estática com um parâmetro
+            ExibirNumeroEstatico(42);
+        }
+
+        static string ExibirMensagem(string mensagem)
+        {
+            return mensagem;
+        }
+
+        static void ExibirNome(string nome)
+        {
+            Console.WriteLine("Nome: " + nome);
+        }
+
+        static int SomarDoisNumeros(int num1, int num2)
+        {
+            return num1 + num2;
+        }
+
+        public static void ExibirNumeroEstatico(int numero)
+        {
+            Console.WriteLine("Número: " + numero);
+        }
+    }
+}
