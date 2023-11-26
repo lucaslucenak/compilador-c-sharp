@@ -1,3 +1,4 @@
+// Parser JavaCC para Compilador de C#
 PARSER_BEGIN(CompiladorCSharp)
 
 package compiler;
@@ -40,29 +41,30 @@ public class CompiladorCSharp {
 
 PARSER_END(CompiladorCSharp)
 
-//IGNORAR
+
+// Configurações para ignorar espaços, tabs e comentários
 SKIP:
 {	" " | "\r" | "\t" | "\n"
- | <COMENTARIO_SIMPLES: "//" (<OBS>)*>
- | <COMENTARIOS_LONGO: "/*" ("\n" | "\r" | <OBS>)* "*/" >
+ | <COMENTARIO_LINHA: "//" (<OBS>)*>
+ | <COMENTARIO_BLOCO: "/*" ("\n" | "\r" | <OBS>)* "*/" >
  | <#OBS: ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ( ["\n","\r"] | "\r\n")))*>
 }
 
-//PALAVRAS RESERVADAS
+// Definição de tokens para palavras reservadas e elementos da linguagem
 TOKEN :
 {
-      <INT: "int"> { System.out.println("Tipo int: " + image); }
-    | <VAR: "var" > { System.out.println("Tipo Var: " + image); }
-    | <FLOAT: "float" > { System.out.println("Tipo Float: " + image); }
-    | <BOOL: "bool"> { System.out.println("Tipo Bool: " + image); }
-    | <CHAR: "char" > { System.out.println("Tipo Char: " + image); }
-    | <STRING: "string" > { System.out.println("Tipo String: " + image); }
-    | <NULL: "null" >  { System.out.println("Palavra Reservada: " + image); }
-    | <USING: "using" > { System.out.println("Palavra Reservada: " + image); }
-    | <NAMESPACE: "namespace"> { System.out.println("Palavra Reservada: " + image); }
-    | <CLASS: "class" >  { System.out.println("Palavra Reservada: " + image); }
-    | <MAIN: "Main" >  { System.out.println("Palavra Reservada: " + image); }
-    | <VOID: "void" >  { System.out.println("Tipo Void: " + image); }
+      <TIPO_INT: "int"> { System.out.println("Tipo int: " + image); }
+    | <TIPO_VAR: "var" > { System.out.println("Tipo Var: " + image); }
+    | <TIPO_FLOAT: "float" > { System.out.println("Tipo Float: " + image); }
+    | <TIPO_BOOL: "bool"> { System.out.println("Tipo Bool: " + image); }
+    | <TIPO_CHAR: "char" > { System.out.println("Tipo Char: " + image); }
+    | <TIPO_STRING: "string" > { System.out.println("Tipo String: " + image); }
+    | <PALAVRA_NULL: "null" >  { System.out.println("Palavra Reservada: " + image); }
+    | <PALAVRA_USING: "using" > { System.out.println("Palavra Reservada: " + image); }
+    | <PALAVRA_NAMESPACE: "namespace"> { System.out.println("Palavra Reservada: " + image); }
+    | <PALAVRA_CLASS: "class" >  { System.out.println("Palavra Reservada: " + image); }
+    | <PALAVRA_MAIN: "Main" >  { System.out.println("Palavra Reservada: " + image); }
+    | <PALAVRA_VOID: "void" >  { System.out.println("Tipo Void: " + image); }
     | <RETURN: "return" >  { System.out.println("Palavra Reservada: " + image); }
     | <STATIC: "static" >  { System.out.println("Palavra Reservada: " + image); }
     | <PRIVATE: "private" >  { System.out.println("Palavra Reservada: " + image); }
@@ -188,16 +190,16 @@ void Programa():{}{ (DeclararUsing())* (DeclararNamespace() | DeclararClassePrin
                 PRINCIPAL DA CLASE: public class Atividade1 {  }
 * */
 
-void DeclararUsing():{}{ <USING><IDENTIFICADOR> (<PONTO> <IDENTIFICADOR>)* <PONTO_VIRGULA> }
+void DeclararUsing():{}{ <PALAVRA_USING><IDENTIFICADOR> (<PONTO> <IDENTIFICADOR>)* <PONTO_VIRGULA> }
 /*DECLARANDO AS IMPORTACOES DAS BIBLIOTECAS EM C#: using System;
                                                    using System.Mathematics.pow; (extendida)
 * */
 
-void DeclararNamespace():{}{  <NAMESPACE><IDENTIFICADOR> <ABRE_CHAVE> DeclararClassePrincipal() <FECHA_CHAVE> }
+void DeclararNamespace():{}{  <PALAVRA_NAMESPACE><IDENTIFICADOR> <ABRE_CHAVE> DeclararClassePrincipal() <FECHA_CHAVE> }
 /*DECLARACAO DO NAMESPACE DO PACOTE? namespace Atividade1 {   [aqui fica public class]    }
 * */
 
-void DeclararClassePrincipal():{} { Modificador() <CLASS> <IDENTIFICADOR> <ABRE_CHAVE> CorpoClasse() <FECHA_CHAVE> }
+void DeclararClassePrincipal():{} { Modificador() <PALAVRA_CLASS> <IDENTIFICADOR> <ABRE_CHAVE> CorpoClasse() <FECHA_CHAVE> }
 /*DECLARA A CLASSE PRINCIPAL :  public class Atividade1 {    [Main fica aqui] }
 * */
 
@@ -227,7 +229,7 @@ void ListaDeParametros():{}{ TipoDeDados() <IDENTIFICADOR> (<VIRGULA> TipoDeDado
                                      : string nome, string sobrenome, int idade
 * */
 
-void Main():{} {  <MAIN> <ABRE_PARENTESES> <STRING> <ABRE_COLCHETE> <FECHA_COLCHETE> <IDENTIFICADOR> <FECHA_PARENTESES> BlocoDeDeclaracoes() }
+void Main():{} {  <PALAVRA_MAIN> <ABRE_PARENTESES> <TIPO_STRING> <ABRE_COLCHETE> <FECHA_COLCHETE> <IDENTIFICADOR> <FECHA_PARENTESES> BlocoDeDeclaracoes() }
 /* INSTANCIA O CORPO DA CLASSE COMO UM MAIN:  public static void Main(string[] args) { }
 * */
 
@@ -240,15 +242,30 @@ void ChamarFuncao() : {} {
 }
 
 void CorpoDaDeclaracao():{}{
-    ChamarFuncao()
-  | DeclararVariavel()
-  | AtribuirVariavel()
-  | RetornoDaFuncao()
-  | If_Else()
-  | Print()
-  | Input() <PONTO_VIRGULA>
-  | While()
+    LOOKAHEAD(ChamarFuncaoLookahead()) ChamarFuncao()
+    | LOOKAHEAD(AtribuirVariavelLookahead()) AtribuirVariavel()
+    | IncrementoDecrementoPrefixado() <PONTO_VIRGULA>
+    | DeclararVariavel()
+    | RetornoDaFuncao()
+    | If_Else()
+    | Print()
+    | Input() <PONTO_VIRGULA>
+    | While()
 }
+
+boolean ChamarFuncaoLookahead():{}{
+    <IDENTIFICADOR> <ABRE_PARENTESES>
+    { return true; }
+}
+
+boolean AtribuirVariavelLookahead():{}{
+    <IDENTIFICADOR> (
+        <RECEBE> | <MAIS_IGUAL> | <MENOS_IGUAL> | <ASTERISCO_IGUAL> | <BARRA_IGUAL> | <PORCENTO_IGUAL> | <INCREMENTO> | <DECREMENTO>
+    )
+    { return true; }
+}
+
+
 /* CORPO PRINCIPAL DA APLICAÃO COM AS PRINCIPAIS CARACTERISTICAS DA LINGUAGEM COMO:
            DECLARAR UMA VARIAVEL :  string nome [ = expressao | true | false| null]
            RETORNO DA FUNCAO: return [ = expressao | true | false| null];
@@ -265,9 +282,14 @@ void DeclararVariavel(): {}{ TipoDeDados() <IDENTIFICADOR>  (Instanciarvariavel(
 * */
 
 void AtribuirVariavel(): {}{
-    <IDENTIFICADOR> (Instanciarvariavel() | (<INCREMENTO> | <DECREMENTO> | ExpressaoNumericaComAtribuicao() Expressao()) <PONTO_VIRGULA> )
-   |(<INCREMENTO> | <DECREMENTO> )<IDENTIFICADOR> <PONTO_VIRGULA>
+    <IDENTIFICADOR> (
+        <RECEBE> Expressao()
+        | <INCREMENTO>
+        | <DECREMENTO>
+        | ExpressaoNumericaComAtribuicao() Expressao()
+    ) <PONTO_VIRGULA>
 }
+
 /* ATRIBUI UM VALOR A VARIAVEL:   nome [ = expressao | true | false| null]
                                    nome++;
                                    ++nome;
@@ -283,13 +305,42 @@ void RetornoDaFuncao(): {}{ <RETURN> Expressao() <PONTO_VIRGULA> }
 /* RETORNO DE UMA FUNCAO:   return [ = expressao | true | false| null];
 * */
 
-void If_Else(): {}{ <IF> <ABRE_PARENTESES>  Expressao() <FECHA_PARENTESES> BlocoDeDeclaracoesWhile() ( <ELSE> BlocoDeDeclaracoesWhile() )? }
-/*  IF e ELSE : if(){}    if(){} else{}'
-* */
-
-void Expressao():{} {
-    item() [(<MENOR>| <MAIOR> |<MENOR_IGUAL> |<MAIOR_IGUAL> |<IGUAL>|<DIFERENTE> |<AND>|<OR>) item()] [((<AND>|<OR>) Expressao())]
+void If_Else(): {}{
+    <IF> <ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> BlocoDeDeclaracoesWhile()
+    [
+        <ELSE>
+        (
+            LOOKAHEAD(<IF>) ElseIf() // para else if
+            | BlocoDeDeclaracoesWhile() // para else comum
+        )
+    ]
 }
+
+void ElseIf(): {}{
+    <IF> <ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> BlocoDeDeclaracoesWhile()
+    [
+        <ELSE> (
+            LOOKAHEAD(<IF>) ElseIf() // para outro else if
+            | BlocoDeDeclaracoesWhile() // para else final
+        )
+    ]
+}
+
+
+void Expressao():{}{
+    IncrementoDecrementoPrefixado()
+    | TermoLogico() ( (<AND>|<OR>) TermoLogico() )*
+}
+
+
+void TermoLogico():{}{
+    item() ComparacaoResto()
+}
+
+void ComparacaoResto():{}{
+    [ (<MENOR>| <MAIOR> |<MENOR_IGUAL> |<MAIOR_IGUAL> |<IGUAL>|<DIFERENTE>) item() ]
+}
+
 /* EXPRESSOES DA GRAMATICA
             TRUE | FALSE | !TRUE | ! FALSE| NULL
             COMPARACOES : 9> 2
@@ -311,7 +362,7 @@ void itemUnico():{} {
 }
 
 void Item():{} {
-     <INTEGER_LITERAL> | <STRING_LITERAL> | <FLOATING_LITERAL> | <NULL> |(<NEGACAO> )?( VariavelExpressao() |<ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> | <TRUE> | <FALSE>)
+     <INTEGER_LITERAL> | <STRING_LITERAL> | <FLOATING_LITERAL> | <PALAVRA_NULL> |(<NEGACAO> )?( VariavelExpressao() |<ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> | <TRUE> | <FALSE>)
 }/* UM ITEM PODE SER QUALQUER VALOR:
                         INTEIRO: 3
                         STRING: "rom"
@@ -320,9 +371,15 @@ void Item():{} {
                VALORES COM NEGACAO:  ! [ variavel(tipo bool | funcao tipo bool)  | expressao (5>7) | true | false]
 */
 
-void VariavelExpressao():{} {
-    <IDENTIFICADOR> (<ABRE_PARENTESES> ListaDeArgumentos() <FECHA_PARENTESES> | <INCREMENTO> | <DECREMENTO> )?
+void VariavelExpressao():{}{
+    <IDENTIFICADOR> (<INCREMENTO> | <DECREMENTO> | (<ABRE_PARENTESES> ListaDeArgumentos() <FECHA_PARENTESES>))?
 }
+
+void IncrementoDecrementoPrefixado():{}{
+    (<INCREMENTO> | <DECREMENTO>) <IDENTIFICADOR>
+}
+
+
 /*  CASO HAJA UMA VARIAVEL NA EXPRESSAO ELA TEM OS CAMINHOS:
                                          FUNCAO: soma(2,3)
                                          INCREMENTO: soma++
@@ -346,7 +403,7 @@ void Modificador():{}{ <PRIVATE> | <PROTECTED> | <PUBLIC> | <INTERNAl> }
 /* MODIFICADORES DE ACESSO DA CLASSE, FUNCAO OU VARIAVEL
            public int = 1 | protected nome = "rom"| private senha = "88" | internal some()
 * */
-void TipoDeDados():{}{<INT> | <FLOAT> | <STRING> | <CHAR> | <BOOL> | <VOID> | <VAR> }
+void TipoDeDados():{}{<TIPO_INT> | <TIPO_FLOAT> | <TIPO_STRING> | <TIPO_CHAR> | <TIPO_BOOL> | <PALAVRA_VOID> | <TIPO_VAR> }
 /* TIPO DE DADO DA VARIAVEL | FUNCAO E CLASSE;
 * */
 
@@ -357,13 +414,16 @@ void ListaDeArgumentos():{}{ Expressao() (<VIRGULA> Expressao())* }
 void BlocoDeDeclaracoesWhile():{}{ <ABRE_CHAVE> (CorpoDaDeclaracaoWhile() )* <FECHA_CHAVE> }
 
 void CorpoDaDeclaracaoWhile():{}{
-  AtribuirVariavel()
-  | RetornoDaFuncao()
-  | DeclararVariavel()
-  | If_Else()
-  | Print()
-  | Input() <PONTO_VIRGULA>
-  | While()
-  | <BREAK> <PONTO_VIRGULA>
-  | <CONTINUE> <PONTO_VIRGULA>
-  }
+    LOOKAHEAD(ChamarFuncaoLookahead()) ChamarFuncao()
+    | LOOKAHEAD(AtribuirVariavelLookahead()) AtribuirVariavel()
+    | IncrementoDecrementoPrefixado() <PONTO_VIRGULA>
+    | RetornoDaFuncao()
+    | DeclararVariavel()
+    | If_Else()
+    | Print()
+    | Input() <PONTO_VIRGULA>
+    | While()
+    | <BREAK> <PONTO_VIRGULA>
+    | <CONTINUE> <PONTO_VIRGULA>
+}
+

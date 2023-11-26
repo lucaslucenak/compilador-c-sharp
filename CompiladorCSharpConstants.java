@@ -11,35 +11,35 @@ public interface CompiladorCSharpConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int COMENTARIO_SIMPLES = 5;
+  int COMENTARIO_LINHA = 5;
   /** RegularExpression Id. */
-  int COMENTARIOS_LONGO = 6;
+  int COMENTARIO_BLOCO = 6;
   /** RegularExpression Id. */
   int OBS = 7;
   /** RegularExpression Id. */
-  int INT = 8;
+  int TIPO_INT = 8;
   /** RegularExpression Id. */
-  int VAR = 9;
+  int TIPO_VAR = 9;
   /** RegularExpression Id. */
-  int FLOAT = 10;
+  int TIPO_FLOAT = 10;
   /** RegularExpression Id. */
-  int BOOL = 11;
+  int TIPO_BOOL = 11;
   /** RegularExpression Id. */
-  int CHAR = 12;
+  int TIPO_CHAR = 12;
   /** RegularExpression Id. */
-  int STRING = 13;
+  int TIPO_STRING = 13;
   /** RegularExpression Id. */
-  int NULL = 14;
+  int PALAVRA_NULL = 14;
   /** RegularExpression Id. */
-  int USING = 15;
+  int PALAVRA_USING = 15;
   /** RegularExpression Id. */
-  int NAMESPACE = 16;
+  int PALAVRA_NAMESPACE = 16;
   /** RegularExpression Id. */
-  int CLASS = 17;
+  int PALAVRA_CLASS = 17;
   /** RegularExpression Id. */
-  int MAIN = 18;
+  int PALAVRA_MAIN = 18;
   /** RegularExpression Id. */
-  int VOID = 19;
+  int PALAVRA_VOID = 19;
   /** RegularExpression Id. */
   int RETURN = 20;
   /** RegularExpression Id. */
@@ -165,8 +165,8 @@ public interface CompiladorCSharpConstants {
     "\"\\r\"",
     "\"\\t\"",
     "\"\\n\"",
-    "<COMENTARIO_SIMPLES>",
-    "<COMENTARIOS_LONGO>",
+    "<COMENTARIO_LINHA>",
+    "<COMENTARIO_BLOCO>",
     "<OBS>",
     "\"int\"",
     "\"var\"",
