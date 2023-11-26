@@ -9,6 +9,13 @@ namespace ExemploTeste {
             int numeroInteiro = 10;
             float numeroReal = 5.5f;
 
+            if (numeroReal < 2){
+                numeroReal++;
+            }
+            else {
+                numeroReal--;
+            }
+
             // Saída usando Console.WriteLine
             Console.WriteLine(mensagem);
             Console.WriteLine("Inteiro: " + numeroInteiro);
@@ -47,5 +54,6 @@ namespace ExemploTeste {
         public static int Dobrar(int num) {
             return num * 2;
         }
+
     }
 }

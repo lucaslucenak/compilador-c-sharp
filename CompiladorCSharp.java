@@ -42,14 +42,14 @@ public class CompiladorCSharp implements CompiladorCSharpConstants {
 *****************************************/
   static final public 
 void RUN() throws ParseException {
-    Programa();
+    iniciarPrograma();
 }
 
-  static final public void Programa() throws ParseException {
+  static final public void iniciarPrograma() throws ParseException {
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case USING:{
+      case PALAVRA_USING:{
         ;
         break;
         }
@@ -57,18 +57,18 @@ void RUN() throws ParseException {
         jj_la1[0] = jj_gen;
         break label_1;
       }
-      DeclararUsing();
+      using();
     }
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case NAMESPACE:{
-      DeclararNamespace();
+    case PALAVRA_NAMESPACE:{
+      namespace();
       break;
       }
     case PRIVATE:
     case PROTECTED:
     case PUBLIC:
     case INTERNAl:{
-      DeclararClassePrincipal();
+      classePrincipal();
       break;
       }
     default:
@@ -84,8 +84,8 @@ void RUN() throws ParseException {
                 PRINCIPAL DA CLASE: public class Atividade1 {  }
 * */
   static final public 
-void DeclararUsing() throws ParseException {
-    jj_consume_token(USING);
+void using() throws ParseException {
+    jj_consume_token(PALAVRA_USING);
     jj_consume_token(IDENTIFICADOR);
     label_2:
     while (true) {
@@ -108,40 +108,40 @@ void DeclararUsing() throws ParseException {
                                                    using System.Mathematics.pow; (extendida)
 * */
   static final public 
-void DeclararNamespace() throws ParseException {
-    jj_consume_token(NAMESPACE);
+void namespace() throws ParseException {
+    jj_consume_token(PALAVRA_NAMESPACE);
     jj_consume_token(IDENTIFICADOR);
     jj_consume_token(ABRE_CHAVE);
-    DeclararClassePrincipal();
+    classePrincipal();
     jj_consume_token(FECHA_CHAVE);
 }
 
 /*DECLARACAO DO NAMESPACE DO PACOTE? namespace Atividade1 {   [aqui fica public class]    }
 * */
   static final public 
-void DeclararClassePrincipal() throws ParseException {
-    Modificador();
-    jj_consume_token(CLASS);
+void classePrincipal() throws ParseException {
+    modificador();
+    jj_consume_token(PALAVRA_CLASS);
     jj_consume_token(IDENTIFICADOR);
     jj_consume_token(ABRE_CHAVE);
-    CorpoClasse();
+    corpoClasse();
     jj_consume_token(FECHA_CHAVE);
 }
 
 /*DECLARA A CLASSE PRINCIPAL :  public class Atividade1 {    [Main fica aqui] }
 * */
   static final public 
-void CorpoClasse() throws ParseException {
+void corpoClasse() throws ParseException {
     label_3:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case INT:
-      case VAR:
-      case FLOAT:
-      case BOOL:
-      case CHAR:
-      case STRING:
-      case VOID:
+      case TIPO_INT:
+      case TIPO_VAR:
+      case TIPO_FLOAT:
+      case TIPO_BOOL:
+      case TIPO_CHAR:
+      case TIPO_STRING:
+      case PALAVRA_VOID:
       case STATIC:
       case PRIVATE:
       case PROTECTED:
@@ -159,7 +159,7 @@ void CorpoClasse() throws ParseException {
       case PROTECTED:
       case PUBLIC:
       case INTERNAl:{
-        Modificador();
+        modificador();
         break;
         }
       default:
@@ -175,7 +175,7 @@ void CorpoClasse() throws ParseException {
         jj_la1[5] = jj_gen;
         ;
       }
-      TipoDeDados();
+      tipoDeDados();
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case IDENTIFICADOR:{
         jj_consume_token(IDENTIFICADOR);
@@ -183,11 +183,11 @@ void CorpoClasse() throws ParseException {
         case PONTO_VIRGULA:
         case VIRGULA:
         case RECEBE:{
-          Instanciarvariavel();
+          instanciarVariavel();
           break;
           }
         case ABRE_PARENTESES:{
-          InstanciaFuncao();
+          instanciaFuncao();
           break;
           }
         default:
@@ -197,8 +197,8 @@ void CorpoClasse() throws ParseException {
         }
         break;
         }
-      case MAIN:{
-        Main();
+      case PALAVRA_MAIN:{
+        main();
         break;
         }
       default:
@@ -215,27 +215,29 @@ void CorpoClasse() throws ParseException {
            CONSTRUTOR
 * */
   static final public 
-void Instanciarvariavel() throws ParseException {
+void instanciarVariavel() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case RECEBE:{
       jj_consume_token(RECEBE);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case NULL:
+      case PALAVRA_NULL:
       case TRUE:
       case FALSE:
       case ABRE_PARENTESES:
       case NEGACAO:
+      case INCREMENTO:
+      case DECREMENTO:
       case MAIS:
       case MENOS:
       case IDENTIFICADOR:
       case INTEGER_LITERAL:
       case FLOATING_LITERAL:
       case STRING_LITERAL:{
-        Expressao();
+        expressao();
         break;
         }
       case INPUT:{
-        Input();
+        input();
         break;
         }
       default:
@@ -265,7 +267,7 @@ void Instanciarvariavel() throws ParseException {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case RECEBE:{
         jj_consume_token(RECEBE);
-        Expressao();
+        expressao();
         break;
         }
       default:
@@ -282,18 +284,31 @@ void Instanciarvariavel() throws ParseException {
        INPUT            = Console.ReadLine()
 * */
   static final public 
+void main() throws ParseException {
+    jj_consume_token(PALAVRA_MAIN);
+    jj_consume_token(ABRE_PARENTESES);
+    jj_consume_token(TIPO_STRING);
+    jj_consume_token(ABRE_COLCHETE);
+    jj_consume_token(FECHA_COLCHETE);
+    jj_consume_token(IDENTIFICADOR);
+    jj_consume_token(FECHA_PARENTESES);
+    blocoDeclaracoes();
+}
 
-void InstanciaFuncao() throws ParseException {
+/* INSTANCIA O CORPO DA CLASSE COMO UM MAIN:  public static void Main(string[] args) { }
+* */
+  static final public 
+void instanciaFuncao() throws ParseException {
     jj_consume_token(ABRE_PARENTESES);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case INT:
-    case VAR:
-    case FLOAT:
-    case BOOL:
-    case CHAR:
-    case STRING:
-    case VOID:{
-      ListaDeParametros();
+    case TIPO_INT:
+    case TIPO_VAR:
+    case TIPO_FLOAT:
+    case TIPO_BOOL:
+    case TIPO_CHAR:
+    case TIPO_STRING:
+    case PALAVRA_VOID:{
+      listaParametros();
       break;
       }
     default:
@@ -301,7 +316,7 @@ void InstanciaFuncao() throws ParseException {
       ;
     }
     jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoes();
+    blocoDeclaracoes();
 }
 
 /*  INSTANCIA A VARIAVEL COMO UMA FUNCAO :  ( string nome, int numero ) { }
@@ -309,8 +324,8 @@ void InstanciaFuncao() throws ParseException {
 
 * */
   static final public 
-void ListaDeParametros() throws ParseException {
-    TipoDeDados();
+void listaParametros() throws ParseException {
+    tipoDeDados();
     jj_consume_token(IDENTIFICADOR);
     label_5:
     while (true) {
@@ -324,7 +339,7 @@ void ListaDeParametros() throws ParseException {
         break label_5;
       }
       jj_consume_token(VIRGULA);
-      TipoDeDados();
+      tipoDeDados();
       jj_consume_token(IDENTIFICADOR);
     }
 }
@@ -333,32 +348,20 @@ void ListaDeParametros() throws ParseException {
                                      : string nome, string sobrenome, int idade
 * */
   static final public 
-void Main() throws ParseException {
-    jj_consume_token(MAIN);
-    jj_consume_token(ABRE_PARENTESES);
-    jj_consume_token(STRING);
-    jj_consume_token(ABRE_COLCHETE);
-    jj_consume_token(FECHA_COLCHETE);
-    jj_consume_token(IDENTIFICADOR);
-    jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoes();
-}
 
-/* INSTANCIA O CORPO DA CLASSE COMO UM MAIN:  public static void Main(string[] args) { }
-* */
-  static final public 
-void BlocoDeDeclaracoes() throws ParseException {
+
+void blocoDeclaracoes() throws ParseException {
     jj_consume_token(ABRE_CHAVE);
     label_6:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case INT:
-      case VAR:
-      case FLOAT:
-      case BOOL:
-      case CHAR:
-      case STRING:
-      case VOID:
+      case TIPO_INT:
+      case TIPO_VAR:
+      case TIPO_FLOAT:
+      case TIPO_BOOL:
+      case TIPO_CHAR:
+      case TIPO_STRING:
+      case PALAVRA_VOID:
       case RETURN:
       case IF:
       case PRINT:
@@ -374,7 +377,7 @@ void BlocoDeDeclaracoes() throws ParseException {
         jj_la1[14] = jj_gen;
         break label_6;
       }
-      CorpoDaDeclaracao();
+      corpoDeclaracao();
     }
     jj_consume_token(FECHA_CHAVE);
 }
@@ -382,22 +385,24 @@ void BlocoDeDeclaracoes() throws ParseException {
 /*  BLOCO DE CODIGO DA DECLARACAO DE TODAS AS DECLARAÇÕES:  {  [ if| print| while| expressao | return | declarar variavel] }
 * */
   static final public 
-void ChamarFuncao() throws ParseException {
+void chamarFuncao() throws ParseException {
     jj_consume_token(IDENTIFICADOR);
     jj_consume_token(ABRE_PARENTESES);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case NULL:
+    case PALAVRA_NULL:
     case TRUE:
     case FALSE:
     case ABRE_PARENTESES:
     case NEGACAO:
+    case INCREMENTO:
+    case DECREMENTO:
     case MAIS:
     case MENOS:
     case IDENTIFICADOR:
     case INTEGER_LITERAL:
     case FLOATING_LITERAL:
     case STRING_LITERAL:{
-      ListaDeArgumentos();
+      listaDeArgumentos();
       break;
       }
     default:
@@ -408,53 +413,107 @@ void ChamarFuncao() throws ParseException {
     jj_consume_token(PONTO_VIRGULA);
 }
 
-  static final public void CorpoDaDeclaracao() throws ParseException {
+  static final public void corpoDeclaracao() throws ParseException {
+    if (jj_2_1(2147483647)) {
+      chamarFuncao();
+    } else if (jj_2_2(2147483647)) {
+      atribuirVariavel();
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case INCREMENTO:
+      case DECREMENTO:{
+        incrementoOuDecremento();
+        jj_consume_token(PONTO_VIRGULA);
+        break;
+        }
+      case TIPO_INT:
+      case TIPO_VAR:
+      case TIPO_FLOAT:
+      case TIPO_BOOL:
+      case TIPO_CHAR:
+      case TIPO_STRING:
+      case PALAVRA_VOID:{
+        declararVariavel();
+        break;
+        }
+      case RETURN:{
+        retornoFuncao();
+        break;
+        }
+      case IF:{
+        condicionalIfElse();
+        break;
+        }
+      case PRINT:{
+        print();
+        break;
+        }
+      case INPUT:{
+        input();
+        jj_consume_token(PONTO_VIRGULA);
+        break;
+        }
+      case WHILE:{
+        While();
+        break;
+        }
+      default:
+        jj_la1[16] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+}
+
+  static final public boolean chamarFuncaoLookahead() throws ParseException {
+    jj_consume_token(IDENTIFICADOR);
+    jj_consume_token(ABRE_PARENTESES);
+{if ("" != null) return true;}
+    throw new Error("Missing return statement in function");
+}
+
+  static final public boolean atribuirVariavelLookahead() throws ParseException {
+    jj_consume_token(IDENTIFICADOR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case IDENTIFICADOR:{
-      ChamarFuncao();
+    case RECEBE:{
+      jj_consume_token(RECEBE);
       break;
       }
-    case INT:
-    case VAR:
-    case FLOAT:
-    case BOOL:
-    case CHAR:
-    case STRING:
-    case VOID:{
-      DeclararVariavel();
+    case MAIS_IGUAL:{
+      jj_consume_token(MAIS_IGUAL);
       break;
       }
-    case INCREMENTO:
+    case MENOS_IGUAL:{
+      jj_consume_token(MENOS_IGUAL);
+      break;
+      }
+    case ASTERISCO_IGUAL:{
+      jj_consume_token(ASTERISCO_IGUAL);
+      break;
+      }
+    case BARRA_IGUAL:{
+      jj_consume_token(BARRA_IGUAL);
+      break;
+      }
+    case PORCENTO_IGUAL:{
+      jj_consume_token(PORCENTO_IGUAL);
+      break;
+      }
+    case INCREMENTO:{
+      jj_consume_token(INCREMENTO);
+      break;
+      }
     case DECREMENTO:{
-      AtribuirVariavel();
-      break;
-      }
-    case RETURN:{
-      RetornoDaFuncao();
-      break;
-      }
-    case IF:{
-      If_Else();
-      break;
-      }
-    case PRINT:{
-      Print();
-      break;
-      }
-    case INPUT:{
-      Input();
-      jj_consume_token(PONTO_VIRGULA);
-      break;
-      }
-    case WHILE:{
-      While();
+      jj_consume_token(DECREMENTO);
       break;
       }
     default:
-      jj_la1[16] = jj_gen;
+      jj_la1[17] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+{if ("" != null) return true;}
+    throw new Error("Missing return statement in function");
 }
 
 /* CORPO PRINCIPAL DA APLICAÃO COM AS PRINCIPAIS CARACTERISTICAS DA LINGUAGEM COMO:
@@ -467,22 +526,22 @@ void ChamarFuncao() throws ParseException {
            EXPRESSAO : ...
 * */
   static final public 
-void DeclararVariavel() throws ParseException {
-    TipoDeDados();
+void declararVariavel() throws ParseException {
+    tipoDeDados();
     jj_consume_token(IDENTIFICADOR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case PONTO_VIRGULA:
     case VIRGULA:
     case RECEBE:{
-      Instanciarvariavel();
+      instanciarVariavel();
       break;
       }
     case ABRE_PARENTESES:{
-      InstanciaFuncao();
+      instanciaFuncao();
       break;
       }
     default:
-      jj_la1[17] = jj_gen;
+      jj_la1[18] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -492,82 +551,37 @@ void DeclararVariavel() throws ParseException {
                 FUNCAO :  string getnome(lista, lista)
 * */
   static final public 
-void AtribuirVariavel() throws ParseException {
+void atribuirVariavel() throws ParseException {
+    jj_consume_token(IDENTIFICADOR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case IDENTIFICADOR:{
-      jj_consume_token(IDENTIFICADOR);
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case PONTO_VIRGULA:
-      case VIRGULA:
-      case RECEBE:{
-        Instanciarvariavel();
-        break;
-        }
-      case INCREMENTO:
-      case DECREMENTO:
-      case MAIS_IGUAL:
-      case MENOS_IGUAL:
-      case ASTERISCO_IGUAL:
-      case BARRA_IGUAL:
-      case PORCENTO_IGUAL:{
-        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case INCREMENTO:{
-          jj_consume_token(INCREMENTO);
-          break;
-          }
-        case DECREMENTO:{
-          jj_consume_token(DECREMENTO);
-          break;
-          }
-        case MAIS_IGUAL:
-        case MENOS_IGUAL:
-        case ASTERISCO_IGUAL:
-        case BARRA_IGUAL:
-        case PORCENTO_IGUAL:{
-          ExpressaoNumericaComAtribuicao();
-          Expressao();
-          break;
-          }
-        default:
-          jj_la1[18] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-        jj_consume_token(PONTO_VIRGULA);
-        break;
-        }
-      default:
-        jj_la1[19] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+    case RECEBE:{
+      jj_consume_token(RECEBE);
+      expressao();
       break;
       }
-    case INCREMENTO:
-    case DECREMENTO:{
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case INCREMENTO:{
-        jj_consume_token(INCREMENTO);
-        break;
-        }
-      case DECREMENTO:{
-        jj_consume_token(DECREMENTO);
-        break;
-        }
-      default:
-        jj_la1[20] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
+    case INCREMENTO:{
+      jj_consume_token(INCREMENTO);
+      break;
       }
-      jj_consume_token(IDENTIFICADOR);
-      jj_consume_token(PONTO_VIRGULA);
+    case DECREMENTO:{
+      jj_consume_token(DECREMENTO);
+      break;
+      }
+    case MAIS_IGUAL:
+    case MENOS_IGUAL:
+    case ASTERISCO_IGUAL:
+    case BARRA_IGUAL:
+    case PORCENTO_IGUAL:{
+      expressaoNumericaComAtribuicao();
+      expressao();
       break;
       }
     default:
-      jj_la1[21] = jj_gen;
+      jj_la1[19] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    jj_consume_token(PONTO_VIRGULA);
 }
 
 /* ATRIBUI UM VALOR A VARIAVEL:   nome [ = expressao | true | false| null]
@@ -577,7 +591,7 @@ void AtribuirVariavel() throws ParseException {
 * */
   static final public 
 
-void ExpressaoNumericaComAtribuicao() throws ParseException {
+void expressaoNumericaComAtribuicao() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case MAIS_IGUAL:{
       jj_consume_token(MAIS_IGUAL);
@@ -600,7 +614,7 @@ void ExpressaoNumericaComAtribuicao() throws ParseException {
       break;
       }
     default:
-      jj_la1[22] = jj_gen;
+      jj_la1[20] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -609,47 +623,146 @@ void ExpressaoNumericaComAtribuicao() throws ParseException {
 /* FAZ O FINAL DE UMA OPERACAO ARITMETRICA COMM ATRIBUICAO [valor ] +=  10
 * */
   static final public 
-void RetornoDaFuncao() throws ParseException {
+void retornoFuncao() throws ParseException {
     jj_consume_token(RETURN);
-    Expressao();
+    expressao();
     jj_consume_token(PONTO_VIRGULA);
 }
 
 /* RETORNO DE UMA FUNCAO:   return [ = expressao | true | false| null];
 * */
   static final public 
-void If_Else() throws ParseException {
+void condicionalIfElse() throws ParseException {
     jj_consume_token(IF);
     jj_consume_token(ABRE_PARENTESES);
-    Expressao();
+    expressao();
     jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoesWhile();
+    blocoDeclaracoesWhile();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case ELSE:{
       jj_consume_token(ELSE);
-      BlocoDeDeclaracoesWhile();
+      if (jj_2_3(2147483647)) {
+        opcaoElseIf();
+      } else {
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case ABRE_CHAVE:{
+          blocoDeclaracoesWhile();
+          break;
+          }
+        default:
+          jj_la1[21] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
+      }
       break;
       }
     default:
-      jj_la1[23] = jj_gen;
+      jj_la1[22] = jj_gen;
       ;
     }
 }
 
-/*  IF e ELSE : if(){}    if(){} else{}'
-* */
-  static final public 
-void Expressao() throws ParseException {
-    item();
+  static final public void opcaoElseIf() throws ParseException {
+    jj_consume_token(IF);
+    jj_consume_token(ABRE_PARENTESES);
+    expressao();
+    jj_consume_token(FECHA_PARENTESES);
+    blocoDeclaracoesWhile();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case ELSE:{
+      jj_consume_token(ELSE);
+      if (jj_2_4(2147483647)) {
+        opcaoElseIf();
+      } else {
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case ABRE_CHAVE:{
+          blocoDeclaracoesWhile();
+          break;
+          }
+        default:
+          jj_la1[23] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
+      }
+      break;
+      }
+    default:
+      jj_la1[24] = jj_gen;
+      ;
+    }
+}
+
+  static final public void expressao() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case INCREMENTO:
+    case DECREMENTO:{
+      incrementoOuDecremento();
+      break;
+      }
+    case PALAVRA_NULL:
+    case TRUE:
+    case FALSE:
+    case ABRE_PARENTESES:
+    case NEGACAO:
+    case MAIS:
+    case MENOS:
+    case IDENTIFICADOR:
+    case INTEGER_LITERAL:
+    case FLOATING_LITERAL:
+    case STRING_LITERAL:{
+      avaliarTermoLogico();
+      label_7:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case OR:
+        case AND:{
+          ;
+          break;
+          }
+        default:
+          jj_la1[25] = jj_gen;
+          break label_7;
+        }
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case AND:{
+          jj_consume_token(AND);
+          break;
+          }
+        case OR:{
+          jj_consume_token(OR);
+          break;
+          }
+        default:
+          jj_la1[26] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
+        avaliarTermoLogico();
+      }
+      break;
+      }
+    default:
+      jj_la1[27] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+}
+
+  static final public void avaliarTermoLogico() throws ParseException {
+    criarItem();
+    complementoComparacao();
+}
+
+  static final public void complementoComparacao() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case MAIOR:
     case MENOR:
     case IGUAL:
     case MAIOR_IGUAL:
     case MENOR_IGUAL:
-    case DIFERENTE:
-    case OR:
-    case AND:{
+    case DIFERENTE:{
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case MENOR:{
         jj_consume_token(MENOR);
@@ -675,48 +788,16 @@ void Expressao() throws ParseException {
         jj_consume_token(DIFERENTE);
         break;
         }
-      case AND:{
-        jj_consume_token(AND);
-        break;
-        }
-      case OR:{
-        jj_consume_token(OR);
-        break;
-        }
       default:
-        jj_la1[24] = jj_gen;
+        jj_la1[28] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
-      item();
+      criarItem();
       break;
       }
     default:
-      jj_la1[25] = jj_gen;
-      ;
-    }
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case OR:
-    case AND:{
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case AND:{
-        jj_consume_token(AND);
-        break;
-        }
-      case OR:{
-        jj_consume_token(OR);
-        break;
-        }
-      default:
-        jj_la1[26] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-      Expressao();
-      break;
-      }
-    default:
-      jj_la1[27] = jj_gen;
+      jj_la1[29] = jj_gen;
       ;
     }
 }
@@ -729,9 +810,9 @@ void Expressao() throws ParseException {
 
 * */
   static final public 
-void item() throws ParseException {
-    termo();
-    label_7:
+void criarItem() throws ParseException {
+    definirTermo();
+    label_8:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case MAIS:
@@ -740,8 +821,8 @@ void item() throws ParseException {
         break;
         }
       default:
-        jj_la1[28] = jj_gen;
-        break label_7;
+        jj_la1[30] = jj_gen;
+        break label_8;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case MAIS:{
@@ -753,17 +834,17 @@ void item() throws ParseException {
         break;
         }
       default:
-        jj_la1[29] = jj_gen;
+        jj_la1[31] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
-      termo();
+      definirTermo();
     }
 }
 
-  static final public void termo() throws ParseException {
+  static final public void definirTermo() throws ParseException {
     itemUnico();
-    label_8:
+    label_9:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case ASTERISCO:
@@ -773,8 +854,8 @@ void item() throws ParseException {
         break;
         }
       default:
-        jj_la1[30] = jj_gen;
-        break label_8;
+        jj_la1[32] = jj_gen;
+        break label_9;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case ASTERISCO:{
@@ -790,7 +871,7 @@ void item() throws ParseException {
         break;
         }
       default:
-        jj_la1[31] = jj_gen;
+        jj_la1[33] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -812,20 +893,20 @@ void item() throws ParseException {
         break;
         }
       default:
-        jj_la1[32] = jj_gen;
+        jj_la1[34] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       break;
       }
     default:
-      jj_la1[33] = jj_gen;
+      jj_la1[35] = jj_gen;
       ;
     }
-    Item();
+    avaliarItem();
 }
 
-  static final public void Item() throws ParseException {
+  static final public void avaliarItem() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case INTEGER_LITERAL:{
       jj_consume_token(INTEGER_LITERAL);
@@ -839,8 +920,8 @@ void item() throws ParseException {
       jj_consume_token(FLOATING_LITERAL);
       break;
       }
-    case NULL:{
-      jj_consume_token(NULL);
+    case PALAVRA_NULL:{
+      jj_consume_token(PALAVRA_NULL);
       break;
       }
     case TRUE:
@@ -854,17 +935,17 @@ void item() throws ParseException {
         break;
         }
       default:
-        jj_la1[34] = jj_gen;
+        jj_la1[36] = jj_gen;
         ;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case IDENTIFICADOR:{
-        VariavelExpressao();
+        expressaoVariavel();
         break;
         }
       case ABRE_PARENTESES:{
         jj_consume_token(ABRE_PARENTESES);
-        Expressao();
+        expressao();
         jj_consume_token(FECHA_PARENTESES);
         break;
         }
@@ -877,14 +958,14 @@ void item() throws ParseException {
         break;
         }
       default:
-        jj_la1[35] = jj_gen;
+        jj_la1[37] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       break;
       }
     default:
-      jj_la1[36] = jj_gen;
+      jj_la1[38] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -898,19 +979,13 @@ void item() throws ParseException {
                VALORES COM NEGACAO:  ! [ variavel(tipo bool | funcao tipo bool)  | expressao (5>7) | true | false]
 */
   static final public 
-void VariavelExpressao() throws ParseException {
+void expressaoVariavel() throws ParseException {
     jj_consume_token(IDENTIFICADOR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case ABRE_PARENTESES:
     case INCREMENTO:
     case DECREMENTO:{
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case ABRE_PARENTESES:{
-        jj_consume_token(ABRE_PARENTESES);
-        ListaDeArgumentos();
-        jj_consume_token(FECHA_PARENTESES);
-        break;
-        }
       case INCREMENTO:{
         jj_consume_token(INCREMENTO);
         break;
@@ -919,17 +994,41 @@ void VariavelExpressao() throws ParseException {
         jj_consume_token(DECREMENTO);
         break;
         }
+      case ABRE_PARENTESES:{
+        jj_consume_token(ABRE_PARENTESES);
+        listaDeArgumentos();
+        jj_consume_token(FECHA_PARENTESES);
+        break;
+        }
       default:
-        jj_la1[37] = jj_gen;
+        jj_la1[39] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       break;
       }
     default:
-      jj_la1[38] = jj_gen;
+      jj_la1[40] = jj_gen;
       ;
     }
+}
+
+  static final public void incrementoOuDecremento() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case INCREMENTO:{
+      jj_consume_token(INCREMENTO);
+      break;
+      }
+    case DECREMENTO:{
+      jj_consume_token(DECREMENTO);
+      break;
+      }
+    default:
+      jj_la1[41] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    jj_consume_token(IDENTIFICADOR);
 }
 
 /*  CASO HAJA UMA VARIAVEL NA EXPRESSAO ELA TEM OS CAMINHOS:
@@ -939,10 +1038,10 @@ void VariavelExpressao() throws ParseException {
                                          SO O VALOR DA VARIAVEL: soma
 * */
   static final public 
-void Print() throws ParseException {
+void print() throws ParseException {
     jj_consume_token(PRINT);
     jj_consume_token(ABRE_PARENTESES);
-    Expressao();
+    expressao();
     jj_consume_token(FECHA_PARENTESES);
     jj_consume_token(PONTO_VIRGULA);
 }
@@ -950,7 +1049,7 @@ void Print() throws ParseException {
 /*PRINT : Console.WriteLine("teste");
 * */
   static final public 
-void Input() throws ParseException {
+void input() throws ParseException {
     jj_consume_token(INPUT);
     jj_consume_token(ABRE_PARENTESES);
     jj_consume_token(FECHA_PARENTESES);
@@ -962,15 +1061,15 @@ void Input() throws ParseException {
 void While() throws ParseException {
     jj_consume_token(WHILE);
     jj_consume_token(ABRE_PARENTESES);
-    Expressao();
+    expressao();
     jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoesWhile();
+    blocoDeclaracoesWhile();
 }
 
 /*WHILE   : while(expressao| true | false) {}
 * */
   static final public 
-void Modificador() throws ParseException {
+void modificador() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case PRIVATE:{
       jj_consume_token(PRIVATE);
@@ -989,7 +1088,7 @@ void Modificador() throws ParseException {
       break;
       }
     default:
-      jj_la1[39] = jj_gen;
+      jj_la1[42] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -998,38 +1097,38 @@ void Modificador() throws ParseException {
 /* MODIFICADORES DE ACESSO DA CLASSE, FUNCAO OU VARIAVEL
            public int = 1 | protected nome = "rom"| private senha = "88" | internal some()
 * */
-  static final public void TipoDeDados() throws ParseException {
+  static final public void tipoDeDados() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case INT:{
-      jj_consume_token(INT);
+    case TIPO_INT:{
+      jj_consume_token(TIPO_INT);
       break;
       }
-    case FLOAT:{
-      jj_consume_token(FLOAT);
+    case TIPO_FLOAT:{
+      jj_consume_token(TIPO_FLOAT);
       break;
       }
-    case STRING:{
-      jj_consume_token(STRING);
+    case TIPO_STRING:{
+      jj_consume_token(TIPO_STRING);
       break;
       }
-    case CHAR:{
-      jj_consume_token(CHAR);
+    case TIPO_CHAR:{
+      jj_consume_token(TIPO_CHAR);
       break;
       }
-    case BOOL:{
-      jj_consume_token(BOOL);
+    case TIPO_BOOL:{
+      jj_consume_token(TIPO_BOOL);
       break;
       }
-    case VOID:{
-      jj_consume_token(VOID);
+    case PALAVRA_VOID:{
+      jj_consume_token(PALAVRA_VOID);
       break;
       }
-    case VAR:{
-      jj_consume_token(VAR);
+    case TIPO_VAR:{
+      jj_consume_token(TIPO_VAR);
       break;
       }
     default:
-      jj_la1[40] = jj_gen;
+      jj_la1[43] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1038,9 +1137,9 @@ void Modificador() throws ParseException {
 /* TIPO DE DADO DA VARIAVEL | FUNCAO E CLASSE;
 * */
   static final public 
-void ListaDeArgumentos() throws ParseException {
-    Expressao();
-    label_9:
+void listaDeArgumentos() throws ParseException {
+    expressao();
+    label_10:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case VIRGULA:{
@@ -1048,29 +1147,29 @@ void ListaDeArgumentos() throws ParseException {
         break;
         }
       default:
-        jj_la1[41] = jj_gen;
-        break label_9;
+        jj_la1[44] = jj_gen;
+        break label_10;
       }
       jj_consume_token(VIRGULA);
-      Expressao();
+      expressao();
     }
 }
 
 /* LISTA DE ARGUMENTOS DE UMA FUNCAO: soma(2, 2)
 * */
   static final public 
-void BlocoDeDeclaracoesWhile() throws ParseException {
+void blocoDeclaracoesWhile() throws ParseException {
     jj_consume_token(ABRE_CHAVE);
-    label_10:
+    label_11:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case INT:
-      case VAR:
-      case FLOAT:
-      case BOOL:
-      case CHAR:
-      case STRING:
-      case VOID:
+      case TIPO_INT:
+      case TIPO_VAR:
+      case TIPO_FLOAT:
+      case TIPO_BOOL:
+      case TIPO_CHAR:
+      case TIPO_STRING:
+      case PALAVRA_VOID:
       case RETURN:
       case IF:
       case PRINT:
@@ -1085,69 +1184,196 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
         break;
         }
       default:
-        jj_la1[42] = jj_gen;
-        break label_10;
+        jj_la1[45] = jj_gen;
+        break label_11;
       }
-      CorpoDaDeclaracaoWhile();
+      corpoDaDeclaracaoWhile();
     }
     jj_consume_token(FECHA_CHAVE);
 }
 
-  static final public void CorpoDaDeclaracaoWhile() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case INCREMENTO:
-    case DECREMENTO:
-    case IDENTIFICADOR:{
-      AtribuirVariavel();
-      break;
+  static final public void corpoDaDeclaracaoWhile() throws ParseException {
+    if (jj_2_5(2147483647)) {
+      chamarFuncao();
+    } else if (jj_2_6(2147483647)) {
+      atribuirVariavel();
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case INCREMENTO:
+      case DECREMENTO:{
+        incrementoOuDecremento();
+        jj_consume_token(PONTO_VIRGULA);
+        break;
+        }
+      case RETURN:{
+        retornoFuncao();
+        break;
+        }
+      case TIPO_INT:
+      case TIPO_VAR:
+      case TIPO_FLOAT:
+      case TIPO_BOOL:
+      case TIPO_CHAR:
+      case TIPO_STRING:
+      case PALAVRA_VOID:{
+        declararVariavel();
+        break;
+        }
+      case IF:{
+        condicionalIfElse();
+        break;
+        }
+      case PRINT:{
+        print();
+        break;
+        }
+      case INPUT:{
+        input();
+        jj_consume_token(PONTO_VIRGULA);
+        break;
+        }
+      case WHILE:{
+        While();
+        break;
+        }
+      case BREAK:{
+        jj_consume_token(BREAK);
+        jj_consume_token(PONTO_VIRGULA);
+        break;
+        }
+      case CONTINUE:{
+        jj_consume_token(CONTINUE);
+        jj_consume_token(PONTO_VIRGULA);
+        break;
+        }
+      default:
+        jj_la1[46] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
       }
-    case RETURN:{
-      RetornoDaFuncao();
-      break;
-      }
-    case INT:
-    case VAR:
-    case FLOAT:
-    case BOOL:
-    case CHAR:
-    case STRING:
-    case VOID:{
-      DeclararVariavel();
-      break;
-      }
-    case IF:{
-      If_Else();
-      break;
-      }
-    case PRINT:{
-      Print();
-      break;
-      }
-    case INPUT:{
-      Input();
-      jj_consume_token(PONTO_VIRGULA);
-      break;
-      }
-    case WHILE:{
-      While();
-      break;
-      }
-    case BREAK:{
-      jj_consume_token(BREAK);
-      jj_consume_token(PONTO_VIRGULA);
-      break;
-      }
-    case CONTINUE:{
-      jj_consume_token(CONTINUE);
-      jj_consume_token(PONTO_VIRGULA);
-      break;
-      }
-    default:
-      jj_la1[43] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
     }
 }
+
+  static private boolean jj_2_1(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return (!jj_3_1()); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(0, xla); }
+  }
+
+  static private boolean jj_2_2(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return (!jj_3_2()); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(1, xla); }
+  }
+
+  static private boolean jj_2_3(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return (!jj_3_3()); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(2, xla); }
+  }
+
+  static private boolean jj_2_4(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return (!jj_3_4()); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(3, xla); }
+  }
+
+  static private boolean jj_2_5(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return (!jj_3_5()); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(4, xla); }
+  }
+
+  static private boolean jj_2_6(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return (!jj_3_6()); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(5, xla); }
+  }
+
+  static private boolean jj_3R_chamarFuncaoLookahead_258_5_12()
+ {
+    if (jj_scan_token(IDENTIFICADOR)) return true;
+    if (jj_scan_token(ABRE_PARENTESES)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1()
+ {
+    if (jj_3R_chamarFuncaoLookahead_258_5_12()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_6()
+ {
+    if (jj_3R_atribuirVariavelLookahead_263_5_13()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_3()
+ {
+    if (jj_scan_token(IF)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_4()
+ {
+    if (jj_scan_token(IF)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_atribuirVariavelLookahead_263_5_13()
+ {
+    if (jj_scan_token(IDENTIFICADOR)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(44)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(62)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(63)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(64)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(65)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(66)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(55)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(56)) return true;
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    return false;
+  }
+
+  static private boolean jj_3_5()
+ {
+    if (jj_3R_chamarFuncaoLookahead_258_5_12()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_2()
+ {
+    if (jj_3R_atribuirVariavelLookahead_263_5_13()) return true;
+    return false;
+  }
 
   static private boolean jj_initialized_once = false;
   /** Generated Token Manager. */
@@ -1158,8 +1384,10 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
   /** Next token. */
   static public Token jj_nt;
   static private int jj_ntk;
+  static private Token jj_scanpos, jj_lastpos;
+  static private int jj_la;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[44];
+  static final private int[] jj_la1 = new int[47];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -1169,14 +1397,17 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	   jj_la1_init_2();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x8000,0x3c10000,0x0,0x3e83f00,0x3c00000,0x200000,0x0,0x40000,0xb0004000,0x0,0x0,0x0,0x83f00,0x0,0xc4183f00,0x30004000,0xc4183f00,0x0,0x0,0x0,0x0,0x0,0x0,0x8000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30000000,0x30004000,0x0,0x0,0x3c00000,0x83f00,0x0,0xc4183f00,0xc4183f00,};
+	   jj_la1_0 = new int[] {0x8000,0x3c10000,0x0,0x3e83f00,0x3c00000,0x200000,0x0,0x40000,0xb0004000,0x0,0x0,0x0,0x83f00,0x0,0xc4183f00,0x30004000,0xc4183f00,0x0,0x0,0x0,0x0,0x0,0x8000000,0x0,0x8000000,0x0,0x0,0x30004000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30000000,0x30004000,0x0,0x0,0x0,0x3c00000,0x83f00,0x0,0xc4183f00,0xc4183f00,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x0,0x0,0x800,0x0,0x0,0x0,0x1608,0x0,0x6008008,0x1000,0x400,0x1000,0x0,0x400,0x1800001,0x6008008,0x1800001,0x1608,0xc1800000,0xc1801600,0x1800000,0x1800000,0xc0000000,0x0,0x7e6000,0x7e6000,0x600000,0x600000,0x6000000,0x6000000,0x38000000,0x38000000,0x6000000,0x6000000,0x8000,0x8,0x8008,0x1800008,0x1800008,0x0,0x0,0x400,0x1800007,0x1800007,};
+	   jj_la1_1 = new int[] {0x0,0x0,0x800,0x0,0x0,0x0,0x1608,0x0,0x7808008,0x1000,0x400,0x1000,0x0,0x400,0x1800001,0x7808008,0x1800001,0xc1801000,0x1608,0xc1801000,0xc0000000,0x20,0x0,0x20,0x0,0x600000,0x600000,0x7808008,0x1e6000,0x1e6000,0x6000000,0x6000000,0x38000000,0x38000000,0x6000000,0x6000000,0x8000,0x8,0x8008,0x1800008,0x1800008,0x1800000,0x0,0x0,0x400,0x1800007,0x1800007,};
 	}
 	private static void jj_la1_init_2() {
-	   jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8,0x948,0x0,0x0,0x0,0x0,0x0,0x8,0x948,0x8,0x0,0x7,0x7,0x0,0x8,0x7,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8,0x948,0x0,0x0,0x0,0x0,0x0,0x8,0x8,};
+	   jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8,0x948,0x0,0x0,0x0,0x0,0x0,0x8,0x948,0x0,0x7,0x0,0x7,0x7,0x0,0x0,0x0,0x0,0x0,0x0,0x948,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8,0x948,0x0,0x0,0x0,0x0,0x0,0x0,0x8,0x0,};
 	}
+  static final private JJCalls[] jj_2_rtns = new JJCalls[6];
+  static private boolean jj_rescan = false;
+  static private int jj_gc = 0;
 
   /** Constructor with InputStream. */
   public CompiladorCSharp(java.io.InputStream stream) {
@@ -1196,7 +1427,8 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 44; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Reinitialise. */
@@ -1210,7 +1442,8 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 44; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Constructor. */
@@ -1227,7 +1460,8 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 44; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Reinitialise. */
@@ -1245,7 +1479,8 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 44; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Constructor with generated Token Manager. */
@@ -1261,7 +1496,8 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 44; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Reinitialise. */
@@ -1270,7 +1506,8 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 44; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -1280,11 +1517,50 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	 jj_ntk = -1;
 	 if (token.kind == kind) {
 	   jj_gen++;
+	   if (++jj_gc > 100) {
+		 jj_gc = 0;
+		 for (int i = 0; i < jj_2_rtns.length; i++) {
+		   JJCalls c = jj_2_rtns[i];
+		   while (c != null) {
+			 if (c.gen < jj_gen) c.first = null;
+			 c = c.next;
+		   }
+		 }
+	   }
 	   return token;
 	 }
 	 token = oldToken;
 	 jj_kind = kind;
 	 throw generateParseException();
+  }
+
+  @SuppressWarnings("serial")
+  static private final class LookaheadSuccess extends java.lang.Error {
+    @Override
+    public Throwable fillInStackTrace() {
+      return this;
+    }
+  }
+  static private final LookaheadSuccess jj_ls = new LookaheadSuccess();
+  static private boolean jj_scan_token(int kind) {
+	 if (jj_scanpos == jj_lastpos) {
+	   jj_la--;
+	   if (jj_scanpos.next == null) {
+		 jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
+	   } else {
+		 jj_lastpos = jj_scanpos = jj_scanpos.next;
+	   }
+	 } else {
+	   jj_scanpos = jj_scanpos.next;
+	 }
+	 if (jj_rescan) {
+	   int i = 0; Token tok = token;
+	   while (tok != null && tok != jj_scanpos) { i++; tok = tok.next; }
+	   if (tok != null) jj_add_error_token(kind, i);
+	 }
+	 if (jj_scanpos.kind != kind) return true;
+	 if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
+	 return false;
   }
 
 
@@ -1317,6 +1593,46 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
   static private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
   static private int[] jj_expentry;
   static private int jj_kind = -1;
+  static private int[] jj_lasttokens = new int[100];
+  static private int jj_endpos;
+
+  static private void jj_add_error_token(int kind, int pos) {
+	 if (pos >= 100) {
+		return;
+	 }
+
+	 if (pos == jj_endpos + 1) {
+	   jj_lasttokens[jj_endpos++] = kind;
+	 } else if (jj_endpos != 0) {
+	   jj_expentry = new int[jj_endpos];
+
+	   for (int i = 0; i < jj_endpos; i++) {
+		 jj_expentry[i] = jj_lasttokens[i];
+	   }
+
+	   for (int[] oldentry : jj_expentries) {
+		 if (oldentry.length == jj_expentry.length) {
+		   boolean isMatched = true;
+
+		   for (int i = 0; i < jj_expentry.length; i++) {
+			 if (oldentry[i] != jj_expentry[i]) {
+			   isMatched = false;
+			   break;
+			 }
+
+		   }
+		   if (isMatched) {
+			 jj_expentries.add(jj_expentry);
+			 break;
+		   }
+		 }
+	   }
+
+	   if (pos != 0) {
+		 jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+	   }
+	 }
+  }
 
   /** Generate ParseException. */
   static public ParseException generateParseException() {
@@ -1326,7 +1642,7 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 	   la1tokens[jj_kind] = true;
 	   jj_kind = -1;
 	 }
-	 for (int i = 0; i < 44; i++) {
+	 for (int i = 0; i < 47; i++) {
 	   if (jj_la1[i] == jj_gen) {
 		 for (int j = 0; j < 32; j++) {
 		   if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -1348,6 +1664,9 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 		 jj_expentries.add(jj_expentry);
 	   }
 	 }
+	 jj_endpos = 0;
+	 jj_rescan_token();
+	 jj_add_error_token(0, 0);
 	 int[][] exptokseq = new int[jj_expentries.size()][];
 	 for (int i = 0; i < jj_expentries.size(); i++) {
 	   exptokseq[i] = jj_expentries.get(i);
@@ -1368,6 +1687,51 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 
   /** Disable tracing. */
   static final public void disable_tracing() {
+  }
+
+  static private void jj_rescan_token() {
+	 jj_rescan = true;
+	 for (int i = 0; i < 6; i++) {
+	   try {
+		 JJCalls p = jj_2_rtns[i];
+
+		 do {
+		   if (p.gen > jj_gen) {
+			 jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
+			 switch (i) {
+			   case 0: jj_3_1(); break;
+			   case 1: jj_3_2(); break;
+			   case 2: jj_3_3(); break;
+			   case 3: jj_3_4(); break;
+			   case 4: jj_3_5(); break;
+			   case 5: jj_3_6(); break;
+			 }
+		   }
+		   p = p.next;
+		 } while (p != null);
+
+		 } catch(LookaheadSuccess ls) { }
+	 }
+	 jj_rescan = false;
+  }
+
+  static private void jj_save(int index, int xla) {
+	 JJCalls p = jj_2_rtns[index];
+	 while (p.gen > jj_gen) {
+	   if (p.next == null) { p = p.next = new JJCalls(); break; }
+	   p = p.next;
+	 }
+
+	 p.gen = jj_gen + xla - jj_la; 
+	 p.first = token;
+	 p.arg = xla;
+  }
+
+  static final class JJCalls {
+	 int gen;
+	 Token first;
+	 int arg;
+	 JJCalls next;
   }
 
 }

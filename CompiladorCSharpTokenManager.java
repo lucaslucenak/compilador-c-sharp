@@ -1515,62 +1515,62 @@ static void TokenLexicalActions(Token matchedToken)
       case 8 :
         image.append(jjstrLiteralImages[8]);
         lengthOfMatch = jjstrLiteralImages[8].length();
-                     System.out.println("Tipo int: " + image);
+                          System.out.println("Tipo int: " + image);
          break;
       case 9 :
         image.append(jjstrLiteralImages[9]);
         lengthOfMatch = jjstrLiteralImages[9].length();
-                      System.out.println("Tipo Var: " + image);
+                           System.out.println("Tipo Var: " + image);
          break;
       case 10 :
         image.append(jjstrLiteralImages[10]);
         lengthOfMatch = jjstrLiteralImages[10].length();
-                          System.out.println("Tipo Float: " + image);
+                               System.out.println("Tipo Float: " + image);
          break;
       case 11 :
         image.append(jjstrLiteralImages[11]);
         lengthOfMatch = jjstrLiteralImages[11].length();
-                       System.out.println("Tipo Bool: " + image);
+                            System.out.println("Tipo Bool: " + image);
          break;
       case 12 :
         image.append(jjstrLiteralImages[12]);
         lengthOfMatch = jjstrLiteralImages[12].length();
-                        System.out.println("Tipo Char: " + image);
+                             System.out.println("Tipo Char: " + image);
          break;
       case 13 :
         image.append(jjstrLiteralImages[13]);
         lengthOfMatch = jjstrLiteralImages[13].length();
-                            System.out.println("Tipo String: " + image);
+                                 System.out.println("Tipo String: " + image);
          break;
       case 14 :
         image.append(jjstrLiteralImages[14]);
         lengthOfMatch = jjstrLiteralImages[14].length();
-                         System.out.println("Palavra Reservada: " + image);
+                                 System.out.println("Palavra Reservada: " + image);
          break;
       case 15 :
         image.append(jjstrLiteralImages[15]);
         lengthOfMatch = jjstrLiteralImages[15].length();
-                          System.out.println("Palavra Reservada: " + image);
+                                  System.out.println("Palavra Reservada: " + image);
          break;
       case 16 :
         image.append(jjstrLiteralImages[16]);
         lengthOfMatch = jjstrLiteralImages[16].length();
-                                 System.out.println("Palavra Reservada: " + image);
+                                         System.out.println("Palavra Reservada: " + image);
          break;
       case 17 :
         image.append(jjstrLiteralImages[17]);
         lengthOfMatch = jjstrLiteralImages[17].length();
-                           System.out.println("Palavra Reservada: " + image);
+                                   System.out.println("Palavra Reservada: " + image);
          break;
       case 18 :
         image.append(jjstrLiteralImages[18]);
         lengthOfMatch = jjstrLiteralImages[18].length();
-                         System.out.println("Palavra Reservada: " + image);
+                                 System.out.println("Palavra Reservada: " + image);
          break;
       case 19 :
         image.append(jjstrLiteralImages[19]);
         lengthOfMatch = jjstrLiteralImages[19].length();
-                         System.out.println("Tipo Void: " + image);
+                                 System.out.println("Tipo Void: " + image);
          break;
       case 20 :
         image.append(jjstrLiteralImages[20]);
