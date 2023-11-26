@@ -1,155 +1,59 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Aplicacao
-{
-    internal class TesteProgramaCS
-    {
-        int varInt;
-        private float varFloat;
-        protected static string varBoolean = "nome";
-        public static string CONSTANTE = "Texto constante";
-
-        public static int somaValores(int a, int b)
-        {
-            return (a + b);
-        }
-
-        public static int totalItens = 20;
-        public static string NOME_APLICACAO = "Compilador C#";
-
-        public static float Somar(float a , float b) {
-            return a + b;
-        }
+namespace ExemploTeste {
+    public class ProgramaTeste {
 
         public static void Main(string[] args) {
+            // Tipos básicos e atribuições
+            string mensagem = "Olá, mundo!";
+            int numeroInteiro = 10;
+            float numeroReal = 5.5f;
 
-        // teste comentario \n \b \t \\
-
-        /*teste comentaruio multiplas linhas
-                     ** isso ae
-                     \n \\n \' \n \\
-        */
-
-
-        Console.ReadLine();
-        int resutladoInput = Console.ReadLine();
-
-        Console.WriteLine("bem vindos ao " + NOME_APLICACAO);
-        var num = 10;
-        int numero = 9;
-        float numeroReal;
-        float numeroF = 2f, numeroF2 = 2.0f, numeroF3 = .2f, numeroF4 = 2e10f, numeroF5 = 2.0e2f;
-        string nome = "teste";
-
-        if (myBinding > 0 && myBinding != 10 /*|| myBinding < 1*/ ) {}
-
-		if( ((a+b)>3) && (d < 9)){}
-
-        if(true){}
-        if(true && false){}
-        if(true || !false){}
-        if("nome" == "nome"){}
-        if( (2 * 2) > 10 ){}
-        if( (2 - 2) > 10 ){}
-        if(resultado(2, 5) > 10 ){}
-        if(num == null){}
-        if(num != null){}
-        if((((2 + 2)< 5) == true) && !((2*1 + (18 - 29)) < 100)){}
-        if(soma++ > 10){}
-
-        bool isTrue = true;
-        isTrue = !true;
-
-        bool verifica = numero > num;
-
-        Console.WriteLine(verifica);
-        Console.WriteLine((((2 + 2))));
-        Console.WriteLine("*: " + 2 * 2);
-        Console.WriteLine("/: " + 2 / 2);
-        Console.WriteLine("%: " + 2 % 2);
-        Console.WriteLine("-: " + (2 - 2));
-        Console.WriteLine("+: " + 2 + 2);//observacao teste
-        Console.WriteLine(2 + 2);
-        Console.WriteLine(2 - 2);
-        int num = 1;
-        Console.WriteLine(num++); //1
-        num = 2;
-        Console.WriteLine(num--); //2
-
-        if (verifica) {
-            int i = 0;
-             while (i < 5) {
-                Console.WriteLine(i++);
-
-                 if (i < 2) {
-                     continue;
-                 }
+            if (numeroReal < 2){
+                numeroReal++;
             }
-       }
+            else {
+                numeroReal--;
+            }
 
-       float total = Somar(3.2f, (5.5f + 2));
+            // Saída usando Console.WriteLine
+            Console.WriteLine(mensagem);
+            Console.WriteLine("Inteiro: " + numeroInteiro);
+            Console.WriteLine("Real: " + numeroReal);
 
-       if (total < 10)
-       {
-           num = 24;
-       }
-       else {
-             num = 13;
-       }
+            // Chamada de função
+            int dobro = Dobrar(numeroInteiro);
+            Console.WriteLine("Dobro de " + numeroInteiro + ": " + dobro);
 
-        var contas = 0.0f;
-        contas = 2 + 2;
-        contas = 2 - (2 + 2);
-        contas = 2 + 2 * 6;
-        contas = 8 / 2 + 7 / (8 * 10);
-        contas = 10 % 2;
-        contas++;
-        contas--;
-        --contas;
-        ++contas;
+            // Laço while
+            int contador = 3;
+            while (contador > 0) {
+                Console.WriteLine("Contagem regressiva: " + contador);
+                contador--;
+            }
 
-        constas+= 2*9;
+            // Estrutura condicional if-else
+            if (numeroInteiro > 5 && numeroReal < 10.0f) {
+                Console.WriteLine("Inteiro maior que 5 e Real menor que 10.0");
+            } else {
+                Console.WriteLine("Outra condição");
+            }
 
-        contas -= 10/4;
-        contas += (2 + 2) - (5*9);
-        Console.WriteLine(contas);
+            // Comando de entrada
+            Console.WriteLine("Digite algo:");
+            string entrada = Console.ReadLine();
+            Console.WriteLine("Você digitou: " + entrada);
 
-        int bb = 2, aa = 5;
-        bool testeRelacional;
-
-        testeRelacional = aa > bb;
-        testeRelacional = aa < bb;
-        testeRelacional = aa <= bb;
-        testeRelacional = bb >= aa;
-        testeRelacional = aa == bb;
-        num += 10;
-        num -= 10;
-        num /= 10;
-        num %= 10;
-        num *= 10;
-        num = 10 - 12 + 2 * 4;
-
-
-        int calculaIdade(int anoNascimento, int anoAtual) {
-             return anoAtual - anoNascimento;
+            // Expressões com operadores
+            int soma = numeroInteiro + 5;
+            bool maiorQueDez = soma > 10;
+            Console.WriteLine("Soma maior que dez? " + maiorQueDez);
         }
 
-        while (true) {
-            if (calculaIdade(1997, 2022) > 10)
-               {
-                   break;
-                }
-                else {
-                    while (testeRelacional) {
-                      Console.WriteLine("Final");
-                     }
-                }
-            }
+        // Declaração de função
+        public static int Dobrar(int num) {
+            return num * 2;
         }
+
     }
 }

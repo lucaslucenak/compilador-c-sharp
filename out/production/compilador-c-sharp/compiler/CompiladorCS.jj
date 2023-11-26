@@ -181,84 +181,85 @@ TOKEN :
 * ******** GRAMATICA LINGUAGEM C# *******
 *****************************************/
 
-void RUN():{}{ Programa() }
+void RUN():{}{ iniciarPrograma() }
 
-void Programa():{}{ (DeclararUsing())* (DeclararNamespace() | DeclararClassePrincipal()) }
+void iniciarPrograma():{}{ (using())* (namespace() | classePrincipal()) }
 /*  ESTRUTURA GERAL DE UM PROJETO EM C#
                 IMPORTACOES : using System
                 NAMESPACE  :   namespace {   [public class Atividade1 {  }]    }(PODE EXISTIR OU NAO)
                 PRINCIPAL DA CLASE: public class Atividade1 {  }
 * */
 
-void DeclararUsing():{}{ <PALAVRA_USING><IDENTIFICADOR> (<PONTO> <IDENTIFICADOR>)* <PONTO_VIRGULA> }
+void using():{}{ <PALAVRA_USING><IDENTIFICADOR> (<PONTO> <IDENTIFICADOR>)* <PONTO_VIRGULA> }
 /*DECLARANDO AS IMPORTACOES DAS BIBLIOTECAS EM C#: using System;
                                                    using System.Mathematics.pow; (extendida)
 * */
 
-void DeclararNamespace():{}{  <PALAVRA_NAMESPACE><IDENTIFICADOR> <ABRE_CHAVE> DeclararClassePrincipal() <FECHA_CHAVE> }
+void namespace():{}{  <PALAVRA_NAMESPACE><IDENTIFICADOR> <ABRE_CHAVE> classePrincipal() <FECHA_CHAVE> }
 /*DECLARACAO DO NAMESPACE DO PACOTE? namespace Atividade1 {   [aqui fica public class]    }
 * */
 
-void DeclararClassePrincipal():{} { Modificador() <PALAVRA_CLASS> <IDENTIFICADOR> <ABRE_CHAVE> CorpoClasse() <FECHA_CHAVE> }
+void classePrincipal():{} { modificador() <PALAVRA_CLASS> <IDENTIFICADOR> <ABRE_CHAVE> corpoClasse() <FECHA_CHAVE> }
 /*DECLARA A CLASSE PRINCIPAL :  public class Atividade1 {    [Main fica aqui] }
 * */
 
-void CorpoClasse():{} {(    (Modificador())? (<STATIC>)? TipoDeDados() (   <IDENTIFICADOR> (Instanciarvariavel() | InstanciaFuncao()) | Main()   )     )*}
+void corpoClasse():{} {(    (modificador())? (<STATIC>)? tipoDeDados() (   <IDENTIFICADOR> (instanciarVariavel() | instanciaFuncao()) | main()   )     )*}
 /*PODE SER DECLARACAO public static string nome = "oe"
            FUNCAO      public static void print(){ }
            MAIN        public static void Main(String[] args){ }
            CONSTRUTOR
 * */
 
-void Instanciarvariavel():{} { (<RECEBE> (Expressao()| Input()) )? (<VIRGULA><IDENTIFICADOR> (<RECEBE> Expressao())? )* <PONTO_VIRGULA> }
+void instanciarVariavel():{} { (<RECEBE> (expressao()| input()) )? (<VIRGULA><IDENTIFICADOR> (<RECEBE> expressao())? )* <PONTO_VIRGULA> }
 /* INSTANCIA A VARIAVEL :  = (expressao |null | true | false )/
    OU VARIAS SEGUIDAS   = "rom" , sobrenome = "ferr", nomeCompleto = "rom ferr"/
                          , nome2, nome3,
        INPUT            = Console.ReadLine()
 * */
 
+void main():{} {  <PALAVRA_MAIN> <ABRE_PARENTESES> <TIPO_STRING> <ABRE_COLCHETE> <FECHA_COLCHETE> <IDENTIFICADOR> <FECHA_PARENTESES> blocoDeclaracoes() }
+/* INSTANCIA O CORPO DA CLASSE COMO UM MAIN:  public static void Main(string[] args) { }
+* */
 
-void InstanciaFuncao():{} { <ABRE_PARENTESES> (ListaDeParametros())? <FECHA_PARENTESES> BlocoDeDeclaracoes() }
+void instanciaFuncao():{} { <ABRE_PARENTESES> (listaParametros())? <FECHA_PARENTESES> blocoDeclaracoes() }
 /*  INSTANCIA A VARIAVEL COMO UMA FUNCAO :  ( string nome, int numero ) { }
                                             () { }
 
 * */
 
-void ListaDeParametros():{}{ TipoDeDados() <IDENTIFICADOR> (<VIRGULA> TipoDeDados() <IDENTIFICADOR>)* }
+void listaParametros():{}{ tipoDeDados() <IDENTIFICADOR> (<VIRGULA> tipoDeDados() <IDENTIFICADOR>)* }
 /* LISTA DE PARAMETROS DE UMA FUNCAO : string nome
                                      : string nome, string sobrenome, int idade
 * */
 
-void Main():{} {  <PALAVRA_MAIN> <ABRE_PARENTESES> <TIPO_STRING> <ABRE_COLCHETE> <FECHA_COLCHETE> <IDENTIFICADOR> <FECHA_PARENTESES> BlocoDeDeclaracoes() }
-/* INSTANCIA O CORPO DA CLASSE COMO UM MAIN:  public static void Main(string[] args) { }
-* */
 
-void BlocoDeDeclaracoes():{} { <ABRE_CHAVE> (CorpoDaDeclaracao())* <FECHA_CHAVE> }
+
+void blocoDeclaracoes():{} { <ABRE_CHAVE> (corpoDeclaracao())* <FECHA_CHAVE> }
 /*  BLOCO DE CODIGO DA DECLARACAO DE TODAS AS DECLARAÇÕES:  {  [ if| print| while| expressao | return | declarar variavel] }
 * */
 
-void ChamarFuncao() : {} {
-    <IDENTIFICADOR> "(" (ListaDeArgumentos())? ")" <PONTO_VIRGULA>
+void chamarFuncao() : {} {
+    <IDENTIFICADOR> "(" (listaDeArgumentos())? ")" <PONTO_VIRGULA>
 }
 
-void CorpoDaDeclaracao():{}{
-    LOOKAHEAD(ChamarFuncaoLookahead()) ChamarFuncao()
-    | LOOKAHEAD(AtribuirVariavelLookahead()) AtribuirVariavel()
-    | IncrementoDecrementoPrefixado() <PONTO_VIRGULA>
-    | DeclararVariavel()
-    | RetornoDaFuncao()
-    | If_Else()
-    | Print()
-    | Input() <PONTO_VIRGULA>
+void corpoDeclaracao():{}{
+    LOOKAHEAD(chamarFuncaoLookahead()) chamarFuncao()
+    | LOOKAHEAD(atribuirVariavelLookahead()) atribuirVariavel()
+    | incrementoOuDecremento() <PONTO_VIRGULA>
+    | declararVariavel()
+    | retornoFuncao()
+    | condicionalIfElse()
+    | print()
+    | input() <PONTO_VIRGULA>
     | While()
 }
 
-boolean ChamarFuncaoLookahead():{}{
+boolean chamarFuncaoLookahead():{}{
     <IDENTIFICADOR> <ABRE_PARENTESES>
     { return true; }
 }
 
-boolean AtribuirVariavelLookahead():{}{
+boolean atribuirVariavelLookahead():{}{
     <IDENTIFICADOR> (
         <RECEBE> | <MAIS_IGUAL> | <MENOS_IGUAL> | <ASTERISCO_IGUAL> | <BARRA_IGUAL> | <PORCENTO_IGUAL> | <INCREMENTO> | <DECREMENTO>
     )
@@ -276,17 +277,17 @@ boolean AtribuirVariavelLookahead():{}{
            EXPRESSAO : ...
 * */
 
-void DeclararVariavel(): {}{ TipoDeDados() <IDENTIFICADOR>  (Instanciarvariavel()| InstanciaFuncao() )}
+void declararVariavel(): {}{ tipoDeDados() <IDENTIFICADOR>  (instanciarVariavel()| instanciaFuncao() )}
 /* DECLARA UMA VARIAVEL:   string nome [ = expressao | true | false| null]
                 FUNCAO :  string getnome(lista, lista)
 * */
 
-void AtribuirVariavel(): {}{
+void atribuirVariavel(): {}{
     <IDENTIFICADOR> (
-        <RECEBE> Expressao()
+        <RECEBE> expressao()
         | <INCREMENTO>
         | <DECREMENTO>
-        | ExpressaoNumericaComAtribuicao() Expressao()
+        | expressaoNumericaComAtribuicao() expressao()
     ) <PONTO_VIRGULA>
 }
 
@@ -297,48 +298,48 @@ void AtribuirVariavel(): {}{
 * */
 
 
-void ExpressaoNumericaComAtribuicao(): {}{ <MAIS_IGUAL>  | <MENOS_IGUAL>  | <ASTERISCO_IGUAL>  | <BARRA_IGUAL> |  <PORCENTO_IGUAL>  }
+void expressaoNumericaComAtribuicao(): {}{ <MAIS_IGUAL>  | <MENOS_IGUAL>  | <ASTERISCO_IGUAL>  | <BARRA_IGUAL> |  <PORCENTO_IGUAL>  }
 /* FAZ O FINAL DE UMA OPERACAO ARITMETRICA COMM ATRIBUICAO [valor ] +=  10
 * */
 
-void RetornoDaFuncao(): {}{ <RETURN> Expressao() <PONTO_VIRGULA> }
+void retornoFuncao(): {}{ <RETURN> expressao() <PONTO_VIRGULA> }
 /* RETORNO DE UMA FUNCAO:   return [ = expressao | true | false| null];
 * */
 
-void If_Else(): {}{
-    <IF> <ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> BlocoDeDeclaracoesWhile()
+void condicionalIfElse(): {}{
+    <IF> <ABRE_PARENTESES> expressao() <FECHA_PARENTESES> blocoDeclaracoesWhile()
     [
         <ELSE>
         (
-            LOOKAHEAD(<IF>) ElseIf() // para else if
-            | BlocoDeDeclaracoesWhile() // para else comum
+            LOOKAHEAD(<IF>) opcaoElseIf() // para else if
+            | blocoDeclaracoesWhile() // para else comum
         )
     ]
 }
 
-void ElseIf(): {}{
-    <IF> <ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> BlocoDeDeclaracoesWhile()
+void opcaoElseIf(): {}{
+    <IF> <ABRE_PARENTESES> expressao() <FECHA_PARENTESES> blocoDeclaracoesWhile()
     [
         <ELSE> (
-            LOOKAHEAD(<IF>) ElseIf() // para outro else if
-            | BlocoDeDeclaracoesWhile() // para else final
+            LOOKAHEAD(<IF>) opcaoElseIf() // para outro else if
+            | blocoDeclaracoesWhile() // para else final
         )
     ]
 }
 
 
-void Expressao():{}{
-    IncrementoDecrementoPrefixado()
-    | TermoLogico() ( (<AND>|<OR>) TermoLogico() )*
+void expressao():{}{
+    incrementoOuDecremento()
+    | avaliarTermoLogico() ( (<AND>|<OR>) avaliarTermoLogico() )*
 }
 
 
-void TermoLogico():{}{
-    item() ComparacaoResto()
+void avaliarTermoLogico():{}{
+    criarItem() complementoComparacao()
 }
 
-void ComparacaoResto():{}{
-    [ (<MENOR>| <MAIOR> |<MENOR_IGUAL> |<MAIOR_IGUAL> |<IGUAL>|<DIFERENTE>) item() ]
+void complementoComparacao():{}{
+    [ (<MENOR>| <MAIOR> |<MENOR_IGUAL> |<MAIOR_IGUAL> |<IGUAL>|<DIFERENTE>) criarItem() ]
 }
 
 /* EXPRESSOES DA GRAMATICA
@@ -349,20 +350,20 @@ void ComparacaoResto():{}{
 
 * */
 
-void item():{} {
-    termo() ( ("+" | "-") termo() )*
+void criarItem():{} {
+    definirTermo() ( ("+" | "-") definirTermo() )*
 }
 
-void termo():{} {
+void definirTermo():{} {
     itemUnico() (("*"|"/"|"%") itemUnico() )*
 }
 
 void itemUnico():{} {
-    [("+"|"-")] Item()
+    [("+"|"-")] avaliarItem()
 }
 
-void Item():{} {
-     <INTEGER_LITERAL> | <STRING_LITERAL> | <FLOATING_LITERAL> | <PALAVRA_NULL> |(<NEGACAO> )?( VariavelExpressao() |<ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> | <TRUE> | <FALSE>)
+void avaliarItem():{} {
+     <INTEGER_LITERAL> | <STRING_LITERAL> | <FLOATING_LITERAL> | <PALAVRA_NULL> |(<NEGACAO> )?( expressaoVariavel() |<ABRE_PARENTESES> expressao() <FECHA_PARENTESES> | <TRUE> | <FALSE>)
 }/* UM ITEM PODE SER QUALQUER VALOR:
                         INTEIRO: 3
                         STRING: "rom"
@@ -371,11 +372,11 @@ void Item():{} {
                VALORES COM NEGACAO:  ! [ variavel(tipo bool | funcao tipo bool)  | expressao (5>7) | true | false]
 */
 
-void VariavelExpressao():{}{
-    <IDENTIFICADOR> (<INCREMENTO> | <DECREMENTO> | (<ABRE_PARENTESES> ListaDeArgumentos() <FECHA_PARENTESES>))?
+void expressaoVariavel():{}{
+    <IDENTIFICADOR> (<INCREMENTO> | <DECREMENTO> | (<ABRE_PARENTESES> listaDeArgumentos() <FECHA_PARENTESES>))?
 }
 
-void IncrementoDecrementoPrefixado():{}{
+void incrementoOuDecremento():{}{
     (<INCREMENTO> | <DECREMENTO>) <IDENTIFICADOR>
 }
 
@@ -387,41 +388,41 @@ void IncrementoDecrementoPrefixado():{}{
                                          SO O VALOR DA VARIAVEL: soma
 * */
 
-void Print():{}{ <PRINT> <ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> <PONTO_VIRGULA>  }
+void print():{}{ <PRINT> <ABRE_PARENTESES> expressao() <FECHA_PARENTESES> <PONTO_VIRGULA>  }
 /*PRINT : Console.WriteLine("teste");
 * */
 
-void Input():{}{ <INPUT> <ABRE_PARENTESES> <FECHA_PARENTESES> }
+void input():{}{ <INPUT> <ABRE_PARENTESES> <FECHA_PARENTESES> }
 /*PRINT : INPUT : Console.ReadLine()
 * */
 
-void While():{}{ <WHILE> <ABRE_PARENTESES> Expressao() <FECHA_PARENTESES> BlocoDeDeclaracoesWhile() }
+void While():{}{ <WHILE> <ABRE_PARENTESES> expressao() <FECHA_PARENTESES> blocoDeclaracoesWhile() }
 /*WHILE   : while(expressao| true | false) {}
 * */
 
-void Modificador():{}{ <PRIVATE> | <PROTECTED> | <PUBLIC> | <INTERNAl> }
+void modificador():{}{ <PRIVATE> | <PROTECTED> | <PUBLIC> | <INTERNAl> }
 /* MODIFICADORES DE ACESSO DA CLASSE, FUNCAO OU VARIAVEL
            public int = 1 | protected nome = "rom"| private senha = "88" | internal some()
 * */
-void TipoDeDados():{}{<TIPO_INT> | <TIPO_FLOAT> | <TIPO_STRING> | <TIPO_CHAR> | <TIPO_BOOL> | <PALAVRA_VOID> | <TIPO_VAR> }
+void tipoDeDados():{}{<TIPO_INT> | <TIPO_FLOAT> | <TIPO_STRING> | <TIPO_CHAR> | <TIPO_BOOL> | <PALAVRA_VOID> | <TIPO_VAR> }
 /* TIPO DE DADO DA VARIAVEL | FUNCAO E CLASSE;
 * */
 
-void ListaDeArgumentos():{}{ Expressao() (<VIRGULA> Expressao())* }
+void listaDeArgumentos():{}{ expressao() (<VIRGULA> expressao())* }
 /* LISTA DE ARGUMENTOS DE UMA FUNCAO: soma(2, 2)
 * */
 
-void BlocoDeDeclaracoesWhile():{}{ <ABRE_CHAVE> (CorpoDaDeclaracaoWhile() )* <FECHA_CHAVE> }
+void blocoDeclaracoesWhile():{}{ <ABRE_CHAVE> (corpoDaDeclaracaoWhile() )* <FECHA_CHAVE> }
 
-void CorpoDaDeclaracaoWhile():{}{
-    LOOKAHEAD(ChamarFuncaoLookahead()) ChamarFuncao()
-    | LOOKAHEAD(AtribuirVariavelLookahead()) AtribuirVariavel()
-    | IncrementoDecrementoPrefixado() <PONTO_VIRGULA>
-    | RetornoDaFuncao()
-    | DeclararVariavel()
-    | If_Else()
-    | Print()
-    | Input() <PONTO_VIRGULA>
+void corpoDaDeclaracaoWhile():{}{
+    LOOKAHEAD(chamarFuncaoLookahead()) chamarFuncao()
+    | LOOKAHEAD(atribuirVariavelLookahead()) atribuirVariavel()
+    | incrementoOuDecremento() <PONTO_VIRGULA>
+    | retornoFuncao()
+    | declararVariavel()
+    | condicionalIfElse()
+    | print()
+    | input() <PONTO_VIRGULA>
     | While()
     | <BREAK> <PONTO_VIRGULA>
     | <CONTINUE> <PONTO_VIRGULA>

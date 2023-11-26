@@ -42,10 +42,10 @@ public class CompiladorCSharp implements CompiladorCSharpConstants {
 *****************************************/
   static final public 
 void RUN() throws ParseException {
-    Programa();
+    iniciarPrograma();
 }
 
-  static final public void Programa() throws ParseException {
+  static final public void iniciarPrograma() throws ParseException {
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -57,18 +57,18 @@ void RUN() throws ParseException {
         jj_la1[0] = jj_gen;
         break label_1;
       }
-      DeclararUsing();
+      using();
     }
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case PALAVRA_NAMESPACE:{
-      DeclararNamespace();
+      namespace();
       break;
       }
     case PRIVATE:
     case PROTECTED:
     case PUBLIC:
     case INTERNAl:{
-      DeclararClassePrincipal();
+      classePrincipal();
       break;
       }
     default:
@@ -84,7 +84,7 @@ void RUN() throws ParseException {
                 PRINCIPAL DA CLASE: public class Atividade1 {  }
 * */
   static final public 
-void DeclararUsing() throws ParseException {
+void using() throws ParseException {
     jj_consume_token(PALAVRA_USING);
     jj_consume_token(IDENTIFICADOR);
     label_2:
@@ -108,30 +108,30 @@ void DeclararUsing() throws ParseException {
                                                    using System.Mathematics.pow; (extendida)
 * */
   static final public 
-void DeclararNamespace() throws ParseException {
+void namespace() throws ParseException {
     jj_consume_token(PALAVRA_NAMESPACE);
     jj_consume_token(IDENTIFICADOR);
     jj_consume_token(ABRE_CHAVE);
-    DeclararClassePrincipal();
+    classePrincipal();
     jj_consume_token(FECHA_CHAVE);
 }
 
 /*DECLARACAO DO NAMESPACE DO PACOTE? namespace Atividade1 {   [aqui fica public class]    }
 * */
   static final public 
-void DeclararClassePrincipal() throws ParseException {
-    Modificador();
+void classePrincipal() throws ParseException {
+    modificador();
     jj_consume_token(PALAVRA_CLASS);
     jj_consume_token(IDENTIFICADOR);
     jj_consume_token(ABRE_CHAVE);
-    CorpoClasse();
+    corpoClasse();
     jj_consume_token(FECHA_CHAVE);
 }
 
 /*DECLARA A CLASSE PRINCIPAL :  public class Atividade1 {    [Main fica aqui] }
 * */
   static final public 
-void CorpoClasse() throws ParseException {
+void corpoClasse() throws ParseException {
     label_3:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -159,7 +159,7 @@ void CorpoClasse() throws ParseException {
       case PROTECTED:
       case PUBLIC:
       case INTERNAl:{
-        Modificador();
+        modificador();
         break;
         }
       default:
@@ -175,7 +175,7 @@ void CorpoClasse() throws ParseException {
         jj_la1[5] = jj_gen;
         ;
       }
-      TipoDeDados();
+      tipoDeDados();
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case IDENTIFICADOR:{
         jj_consume_token(IDENTIFICADOR);
@@ -183,11 +183,11 @@ void CorpoClasse() throws ParseException {
         case PONTO_VIRGULA:
         case VIRGULA:
         case RECEBE:{
-          Instanciarvariavel();
+          instanciarVariavel();
           break;
           }
         case ABRE_PARENTESES:{
-          InstanciaFuncao();
+          instanciaFuncao();
           break;
           }
         default:
@@ -198,7 +198,7 @@ void CorpoClasse() throws ParseException {
         break;
         }
       case PALAVRA_MAIN:{
-        Main();
+        main();
         break;
         }
       default:
@@ -215,7 +215,7 @@ void CorpoClasse() throws ParseException {
            CONSTRUTOR
 * */
   static final public 
-void Instanciarvariavel() throws ParseException {
+void instanciarVariavel() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case RECEBE:{
       jj_consume_token(RECEBE);
@@ -233,11 +233,11 @@ void Instanciarvariavel() throws ParseException {
       case INTEGER_LITERAL:
       case FLOATING_LITERAL:
       case STRING_LITERAL:{
-        Expressao();
+        expressao();
         break;
         }
       case INPUT:{
-        Input();
+        input();
         break;
         }
       default:
@@ -267,7 +267,7 @@ void Instanciarvariavel() throws ParseException {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case RECEBE:{
         jj_consume_token(RECEBE);
-        Expressao();
+        expressao();
         break;
         }
       default:
@@ -284,8 +284,21 @@ void Instanciarvariavel() throws ParseException {
        INPUT            = Console.ReadLine()
 * */
   static final public 
+void main() throws ParseException {
+    jj_consume_token(PALAVRA_MAIN);
+    jj_consume_token(ABRE_PARENTESES);
+    jj_consume_token(TIPO_STRING);
+    jj_consume_token(ABRE_COLCHETE);
+    jj_consume_token(FECHA_COLCHETE);
+    jj_consume_token(IDENTIFICADOR);
+    jj_consume_token(FECHA_PARENTESES);
+    blocoDeclaracoes();
+}
 
-void InstanciaFuncao() throws ParseException {
+/* INSTANCIA O CORPO DA CLASSE COMO UM MAIN:  public static void Main(string[] args) { }
+* */
+  static final public 
+void instanciaFuncao() throws ParseException {
     jj_consume_token(ABRE_PARENTESES);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TIPO_INT:
@@ -295,7 +308,7 @@ void InstanciaFuncao() throws ParseException {
     case TIPO_CHAR:
     case TIPO_STRING:
     case PALAVRA_VOID:{
-      ListaDeParametros();
+      listaParametros();
       break;
       }
     default:
@@ -303,7 +316,7 @@ void InstanciaFuncao() throws ParseException {
       ;
     }
     jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoes();
+    blocoDeclaracoes();
 }
 
 /*  INSTANCIA A VARIAVEL COMO UMA FUNCAO :  ( string nome, int numero ) { }
@@ -311,8 +324,8 @@ void InstanciaFuncao() throws ParseException {
 
 * */
   static final public 
-void ListaDeParametros() throws ParseException {
-    TipoDeDados();
+void listaParametros() throws ParseException {
+    tipoDeDados();
     jj_consume_token(IDENTIFICADOR);
     label_5:
     while (true) {
@@ -326,7 +339,7 @@ void ListaDeParametros() throws ParseException {
         break label_5;
       }
       jj_consume_token(VIRGULA);
-      TipoDeDados();
+      tipoDeDados();
       jj_consume_token(IDENTIFICADOR);
     }
 }
@@ -335,21 +348,9 @@ void ListaDeParametros() throws ParseException {
                                      : string nome, string sobrenome, int idade
 * */
   static final public 
-void Main() throws ParseException {
-    jj_consume_token(PALAVRA_MAIN);
-    jj_consume_token(ABRE_PARENTESES);
-    jj_consume_token(TIPO_STRING);
-    jj_consume_token(ABRE_COLCHETE);
-    jj_consume_token(FECHA_COLCHETE);
-    jj_consume_token(IDENTIFICADOR);
-    jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoes();
-}
 
-/* INSTANCIA O CORPO DA CLASSE COMO UM MAIN:  public static void Main(string[] args) { }
-* */
-  static final public 
-void BlocoDeDeclaracoes() throws ParseException {
+
+void blocoDeclaracoes() throws ParseException {
     jj_consume_token(ABRE_CHAVE);
     label_6:
     while (true) {
@@ -376,7 +377,7 @@ void BlocoDeDeclaracoes() throws ParseException {
         jj_la1[14] = jj_gen;
         break label_6;
       }
-      CorpoDaDeclaracao();
+      corpoDeclaracao();
     }
     jj_consume_token(FECHA_CHAVE);
 }
@@ -384,7 +385,7 @@ void BlocoDeDeclaracoes() throws ParseException {
 /*  BLOCO DE CODIGO DA DECLARACAO DE TODAS AS DECLARAÇÕES:  {  [ if| print| while| expressao | return | declarar variavel] }
 * */
   static final public 
-void ChamarFuncao() throws ParseException {
+void chamarFuncao() throws ParseException {
     jj_consume_token(IDENTIFICADOR);
     jj_consume_token(ABRE_PARENTESES);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -401,7 +402,7 @@ void ChamarFuncao() throws ParseException {
     case INTEGER_LITERAL:
     case FLOATING_LITERAL:
     case STRING_LITERAL:{
-      ListaDeArgumentos();
+      listaDeArgumentos();
       break;
       }
     default:
@@ -412,16 +413,16 @@ void ChamarFuncao() throws ParseException {
     jj_consume_token(PONTO_VIRGULA);
 }
 
-  static final public void CorpoDaDeclaracao() throws ParseException {
+  static final public void corpoDeclaracao() throws ParseException {
     if (jj_2_1(2147483647)) {
-      ChamarFuncao();
+      chamarFuncao();
     } else if (jj_2_2(2147483647)) {
-      AtribuirVariavel();
+      atribuirVariavel();
     } else {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case INCREMENTO:
       case DECREMENTO:{
-        IncrementoDecrementoPrefixado();
+        incrementoOuDecremento();
         jj_consume_token(PONTO_VIRGULA);
         break;
         }
@@ -432,23 +433,23 @@ void ChamarFuncao() throws ParseException {
       case TIPO_CHAR:
       case TIPO_STRING:
       case PALAVRA_VOID:{
-        DeclararVariavel();
+        declararVariavel();
         break;
         }
       case RETURN:{
-        RetornoDaFuncao();
+        retornoFuncao();
         break;
         }
       case IF:{
-        If_Else();
+        condicionalIfElse();
         break;
         }
       case PRINT:{
-        Print();
+        print();
         break;
         }
       case INPUT:{
-        Input();
+        input();
         jj_consume_token(PONTO_VIRGULA);
         break;
         }
@@ -464,14 +465,14 @@ void ChamarFuncao() throws ParseException {
     }
 }
 
-  static final public boolean ChamarFuncaoLookahead() throws ParseException {
+  static final public boolean chamarFuncaoLookahead() throws ParseException {
     jj_consume_token(IDENTIFICADOR);
     jj_consume_token(ABRE_PARENTESES);
 {if ("" != null) return true;}
     throw new Error("Missing return statement in function");
 }
 
-  static final public boolean AtribuirVariavelLookahead() throws ParseException {
+  static final public boolean atribuirVariavelLookahead() throws ParseException {
     jj_consume_token(IDENTIFICADOR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case RECEBE:{
@@ -525,18 +526,18 @@ void ChamarFuncao() throws ParseException {
            EXPRESSAO : ...
 * */
   static final public 
-void DeclararVariavel() throws ParseException {
-    TipoDeDados();
+void declararVariavel() throws ParseException {
+    tipoDeDados();
     jj_consume_token(IDENTIFICADOR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case PONTO_VIRGULA:
     case VIRGULA:
     case RECEBE:{
-      Instanciarvariavel();
+      instanciarVariavel();
       break;
       }
     case ABRE_PARENTESES:{
-      InstanciaFuncao();
+      instanciaFuncao();
       break;
       }
     default:
@@ -550,12 +551,12 @@ void DeclararVariavel() throws ParseException {
                 FUNCAO :  string getnome(lista, lista)
 * */
   static final public 
-void AtribuirVariavel() throws ParseException {
+void atribuirVariavel() throws ParseException {
     jj_consume_token(IDENTIFICADOR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case RECEBE:{
       jj_consume_token(RECEBE);
-      Expressao();
+      expressao();
       break;
       }
     case INCREMENTO:{
@@ -571,8 +572,8 @@ void AtribuirVariavel() throws ParseException {
     case ASTERISCO_IGUAL:
     case BARRA_IGUAL:
     case PORCENTO_IGUAL:{
-      ExpressaoNumericaComAtribuicao();
-      Expressao();
+      expressaoNumericaComAtribuicao();
+      expressao();
       break;
       }
     default:
@@ -590,7 +591,7 @@ void AtribuirVariavel() throws ParseException {
 * */
   static final public 
 
-void ExpressaoNumericaComAtribuicao() throws ParseException {
+void expressaoNumericaComAtribuicao() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case MAIS_IGUAL:{
       jj_consume_token(MAIS_IGUAL);
@@ -622,30 +623,30 @@ void ExpressaoNumericaComAtribuicao() throws ParseException {
 /* FAZ O FINAL DE UMA OPERACAO ARITMETRICA COMM ATRIBUICAO [valor ] +=  10
 * */
   static final public 
-void RetornoDaFuncao() throws ParseException {
+void retornoFuncao() throws ParseException {
     jj_consume_token(RETURN);
-    Expressao();
+    expressao();
     jj_consume_token(PONTO_VIRGULA);
 }
 
 /* RETORNO DE UMA FUNCAO:   return [ = expressao | true | false| null];
 * */
   static final public 
-void If_Else() throws ParseException {
+void condicionalIfElse() throws ParseException {
     jj_consume_token(IF);
     jj_consume_token(ABRE_PARENTESES);
-    Expressao();
+    expressao();
     jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoesWhile();
+    blocoDeclaracoesWhile();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case ELSE:{
       jj_consume_token(ELSE);
       if (jj_2_3(2147483647)) {
-        ElseIf();
+        opcaoElseIf();
       } else {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case ABRE_CHAVE:{
-          BlocoDeDeclaracoesWhile();
+          blocoDeclaracoesWhile();
           break;
           }
         default:
@@ -662,21 +663,21 @@ void If_Else() throws ParseException {
     }
 }
 
-  static final public void ElseIf() throws ParseException {
+  static final public void opcaoElseIf() throws ParseException {
     jj_consume_token(IF);
     jj_consume_token(ABRE_PARENTESES);
-    Expressao();
+    expressao();
     jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoesWhile();
+    blocoDeclaracoesWhile();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case ELSE:{
       jj_consume_token(ELSE);
       if (jj_2_4(2147483647)) {
-        ElseIf();
+        opcaoElseIf();
       } else {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case ABRE_CHAVE:{
-          BlocoDeDeclaracoesWhile();
+          blocoDeclaracoesWhile();
           break;
           }
         default:
@@ -693,11 +694,11 @@ void If_Else() throws ParseException {
     }
 }
 
-  static final public void Expressao() throws ParseException {
+  static final public void expressao() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case INCREMENTO:
     case DECREMENTO:{
-      IncrementoDecrementoPrefixado();
+      incrementoOuDecremento();
       break;
       }
     case PALAVRA_NULL:
@@ -711,7 +712,7 @@ void If_Else() throws ParseException {
     case INTEGER_LITERAL:
     case FLOATING_LITERAL:
     case STRING_LITERAL:{
-      TermoLogico();
+      avaliarTermoLogico();
       label_7:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -738,7 +739,7 @@ void If_Else() throws ParseException {
           jj_consume_token(-1);
           throw new ParseException();
         }
-        TermoLogico();
+        avaliarTermoLogico();
       }
       break;
       }
@@ -749,12 +750,12 @@ void If_Else() throws ParseException {
     }
 }
 
-  static final public void TermoLogico() throws ParseException {
-    item();
-    ComparacaoResto();
+  static final public void avaliarTermoLogico() throws ParseException {
+    criarItem();
+    complementoComparacao();
 }
 
-  static final public void ComparacaoResto() throws ParseException {
+  static final public void complementoComparacao() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case MAIOR:
     case MENOR:
@@ -792,7 +793,7 @@ void If_Else() throws ParseException {
         jj_consume_token(-1);
         throw new ParseException();
       }
-      item();
+      criarItem();
       break;
       }
     default:
@@ -809,8 +810,8 @@ void If_Else() throws ParseException {
 
 * */
   static final public 
-void item() throws ParseException {
-    termo();
+void criarItem() throws ParseException {
+    definirTermo();
     label_8:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -837,11 +838,11 @@ void item() throws ParseException {
         jj_consume_token(-1);
         throw new ParseException();
       }
-      termo();
+      definirTermo();
     }
 }
 
-  static final public void termo() throws ParseException {
+  static final public void definirTermo() throws ParseException {
     itemUnico();
     label_9:
     while (true) {
@@ -902,10 +903,10 @@ void item() throws ParseException {
       jj_la1[35] = jj_gen;
       ;
     }
-    Item();
+    avaliarItem();
 }
 
-  static final public void Item() throws ParseException {
+  static final public void avaliarItem() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case INTEGER_LITERAL:{
       jj_consume_token(INTEGER_LITERAL);
@@ -939,12 +940,12 @@ void item() throws ParseException {
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case IDENTIFICADOR:{
-        VariavelExpressao();
+        expressaoVariavel();
         break;
         }
       case ABRE_PARENTESES:{
         jj_consume_token(ABRE_PARENTESES);
-        Expressao();
+        expressao();
         jj_consume_token(FECHA_PARENTESES);
         break;
         }
@@ -978,7 +979,7 @@ void item() throws ParseException {
                VALORES COM NEGACAO:  ! [ variavel(tipo bool | funcao tipo bool)  | expressao (5>7) | true | false]
 */
   static final public 
-void VariavelExpressao() throws ParseException {
+void expressaoVariavel() throws ParseException {
     jj_consume_token(IDENTIFICADOR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case ABRE_PARENTESES:
@@ -995,7 +996,7 @@ void VariavelExpressao() throws ParseException {
         }
       case ABRE_PARENTESES:{
         jj_consume_token(ABRE_PARENTESES);
-        ListaDeArgumentos();
+        listaDeArgumentos();
         jj_consume_token(FECHA_PARENTESES);
         break;
         }
@@ -1012,7 +1013,7 @@ void VariavelExpressao() throws ParseException {
     }
 }
 
-  static final public void IncrementoDecrementoPrefixado() throws ParseException {
+  static final public void incrementoOuDecremento() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case INCREMENTO:{
       jj_consume_token(INCREMENTO);
@@ -1037,10 +1038,10 @@ void VariavelExpressao() throws ParseException {
                                          SO O VALOR DA VARIAVEL: soma
 * */
   static final public 
-void Print() throws ParseException {
+void print() throws ParseException {
     jj_consume_token(PRINT);
     jj_consume_token(ABRE_PARENTESES);
-    Expressao();
+    expressao();
     jj_consume_token(FECHA_PARENTESES);
     jj_consume_token(PONTO_VIRGULA);
 }
@@ -1048,7 +1049,7 @@ void Print() throws ParseException {
 /*PRINT : Console.WriteLine("teste");
 * */
   static final public 
-void Input() throws ParseException {
+void input() throws ParseException {
     jj_consume_token(INPUT);
     jj_consume_token(ABRE_PARENTESES);
     jj_consume_token(FECHA_PARENTESES);
@@ -1060,15 +1061,15 @@ void Input() throws ParseException {
 void While() throws ParseException {
     jj_consume_token(WHILE);
     jj_consume_token(ABRE_PARENTESES);
-    Expressao();
+    expressao();
     jj_consume_token(FECHA_PARENTESES);
-    BlocoDeDeclaracoesWhile();
+    blocoDeclaracoesWhile();
 }
 
 /*WHILE   : while(expressao| true | false) {}
 * */
   static final public 
-void Modificador() throws ParseException {
+void modificador() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case PRIVATE:{
       jj_consume_token(PRIVATE);
@@ -1096,7 +1097,7 @@ void Modificador() throws ParseException {
 /* MODIFICADORES DE ACESSO DA CLASSE, FUNCAO OU VARIAVEL
            public int = 1 | protected nome = "rom"| private senha = "88" | internal some()
 * */
-  static final public void TipoDeDados() throws ParseException {
+  static final public void tipoDeDados() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TIPO_INT:{
       jj_consume_token(TIPO_INT);
@@ -1136,8 +1137,8 @@ void Modificador() throws ParseException {
 /* TIPO DE DADO DA VARIAVEL | FUNCAO E CLASSE;
 * */
   static final public 
-void ListaDeArgumentos() throws ParseException {
-    Expressao();
+void listaDeArgumentos() throws ParseException {
+    expressao();
     label_10:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -1150,14 +1151,14 @@ void ListaDeArgumentos() throws ParseException {
         break label_10;
       }
       jj_consume_token(VIRGULA);
-      Expressao();
+      expressao();
     }
 }
 
 /* LISTA DE ARGUMENTOS DE UMA FUNCAO: soma(2, 2)
 * */
   static final public 
-void BlocoDeDeclaracoesWhile() throws ParseException {
+void blocoDeclaracoesWhile() throws ParseException {
     jj_consume_token(ABRE_CHAVE);
     label_11:
     while (true) {
@@ -1186,26 +1187,26 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
         jj_la1[45] = jj_gen;
         break label_11;
       }
-      CorpoDaDeclaracaoWhile();
+      corpoDaDeclaracaoWhile();
     }
     jj_consume_token(FECHA_CHAVE);
 }
 
-  static final public void CorpoDaDeclaracaoWhile() throws ParseException {
+  static final public void corpoDaDeclaracaoWhile() throws ParseException {
     if (jj_2_5(2147483647)) {
-      ChamarFuncao();
+      chamarFuncao();
     } else if (jj_2_6(2147483647)) {
-      AtribuirVariavel();
+      atribuirVariavel();
     } else {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case INCREMENTO:
       case DECREMENTO:{
-        IncrementoDecrementoPrefixado();
+        incrementoOuDecremento();
         jj_consume_token(PONTO_VIRGULA);
         break;
         }
       case RETURN:{
-        RetornoDaFuncao();
+        retornoFuncao();
         break;
         }
       case TIPO_INT:
@@ -1215,19 +1216,19 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
       case TIPO_CHAR:
       case TIPO_STRING:
       case PALAVRA_VOID:{
-        DeclararVariavel();
+        declararVariavel();
         break;
         }
       case IF:{
-        If_Else();
+        condicionalIfElse();
         break;
         }
       case PRINT:{
-        Print();
+        print();
         break;
         }
       case INPUT:{
-        Input();
+        input();
         jj_consume_token(PONTO_VIRGULA);
         break;
         }
@@ -1301,13 +1302,7 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
     finally { jj_save(5, xla); }
   }
 
-  static private boolean jj_3_2()
- {
-    if (jj_3R_AtribuirVariavelLookahead_262_5_13()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_ChamarFuncaoLookahead_257_5_12()
+  static private boolean jj_3R_chamarFuncaoLookahead_258_5_12()
  {
     if (jj_scan_token(IDENTIFICADOR)) return true;
     if (jj_scan_token(ABRE_PARENTESES)) return true;
@@ -1316,13 +1311,13 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 
   static private boolean jj_3_1()
  {
-    if (jj_3R_ChamarFuncaoLookahead_257_5_12()) return true;
+    if (jj_3R_chamarFuncaoLookahead_258_5_12()) return true;
     return false;
   }
 
   static private boolean jj_3_6()
  {
-    if (jj_3R_AtribuirVariavelLookahead_262_5_13()) return true;
+    if (jj_3R_atribuirVariavelLookahead_263_5_13()) return true;
     return false;
   }
 
@@ -1338,7 +1333,7 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
     return false;
   }
 
-  static private boolean jj_3R_AtribuirVariavelLookahead_262_5_13()
+  static private boolean jj_3R_atribuirVariavelLookahead_263_5_13()
  {
     if (jj_scan_token(IDENTIFICADOR)) return true;
     Token xsp;
@@ -1370,7 +1365,13 @@ void BlocoDeDeclaracoesWhile() throws ParseException {
 
   static private boolean jj_3_5()
  {
-    if (jj_3R_ChamarFuncaoLookahead_257_5_12()) return true;
+    if (jj_3R_chamarFuncaoLookahead_258_5_12()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_2()
+ {
+    if (jj_3R_atribuirVariavelLookahead_263_5_13()) return true;
     return false;
   }
 
